@@ -4,6 +4,8 @@ const {
   TenantRegister,
   LanlordRegister,
   Login,
+  reqPasswordReset,
+  passwordReset,
 } = require("../controllers/auth.controllers");
 
 router.get("/", async (req, res, next) => {
@@ -26,5 +28,8 @@ router.post("/login", Login);
 router.get("/logout", async (req, res, next) => {
   res.send("logout");
 });
+
+router.post("/forgetPassword", reqPasswordReset);
+router.put("/resetPassword", passwordReset);
 
 module.exports = router;

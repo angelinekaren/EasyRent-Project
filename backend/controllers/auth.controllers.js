@@ -2,6 +2,9 @@ const { User, Landlord, Tenant } = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const crypto = require("crypto");
+const Token = require("../models/token.model");
+const sendEmail = require("../utils/sendEmail");
 dotenv.config();
 
 // Tenant register controller
@@ -135,8 +138,96 @@ const Login = async (req, res) => {
   });
 };
 
+const reqPasswordReset = async (req, res) => {
+  User.findOne({ email: req.body.email }).exec((err, user) => {
+    if (err) {
+      // internal server error
+      return res.status(500).json({ message: err });
+    }
+    if (!user) {
+      console.log(user);
+      return res.status(404).json({
+        message: "User does not exist!",
+      });
+    }
+    let token = Token.findOne({ userId: user._id });
+    if (token) {
+      token.deleteOne();
+    }
+    let resetToken = crypto.randomBytes(32).toString("hex");
+
+    bcrypt.hash(resetToken, 10).then(async (hashedToken) => {
+      await new Token({
+        userId: user._id,
+        token: hashedToken,
+        createdAt: Date.now(),
+      }).save();
+    });
+
+    const link = `${process.env.CLIENT_URL}/resetPassword/${user._id}/${resetToken}`;
+    sendEmail(
+      user.email,
+      "Password Reset Request",
+      { username: user.username, link: link },
+      "./template/reqPasswordReset.handlebars"
+    );
+
+    return res.status(200).json({
+      message: "Link to reset your password is successfuly sent to your email!",
+    });
+  });
+};
+
+const passwordReset = async (req, res) => {
+  try {
+    let userPassResetToken = await Token.findOne({ userId: req.body.userId });
+    if (!userPassResetToken) {
+      return res
+        .status(400)
+        .json({ message: "Invalid link or expired password reset token" });
+    }
+
+    const isTokenValid = await bcrypt.compareSync(
+      req.body.token,
+      userPassResetToken.token
+    );
+
+    if (!isTokenValid) {
+      return res
+        .status(400)
+        .json({ message: "Invalid link or expired password reset token" });
+    }
+
+    User.findById({ _id: req.body.userId }).exec((err, user) => {
+      if (err) {
+        // internal server error
+        return res.status(500).json({ message: err });
+      }
+      bcrypt.hash(req.body.password, 10).then(async (hashedPswd) => {
+        user.password = hashedPswd;
+        await user.save();
+        await userPassResetToken.deleteOne();
+      });
+      sendEmail(
+        user.email,
+        "Your password has been successfully reset!",
+        { username: user.username },
+        "./template/passwordReset.handlebars"
+      );
+      return res.status(200).json({
+        message: "Your password has been successfully reset!",
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ message: "An error occured" });
+    console.log(error);
+  }
+};
+
 module.exports = {
   TenantRegister,
   LanlordRegister,
   Login,
+  reqPasswordReset,
+  passwordReset,
 };

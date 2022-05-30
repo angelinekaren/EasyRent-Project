@@ -7,6 +7,8 @@ import SignUpRenters from "./components/SignUpRenters/SignUpRenters";
 import SignUpOwners from "./components/SignUpOwners/SignUpOwners";
 import Home from "./pages/HomePage/Home";
 import AboutUs from "./pages/AboutUsPage/AboutUs";
+import ForgetPassword from "./components/ForgetPassword/ForgetPassword";
+import ResetPassword from "./components/ResetPassword/ResetPassword";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { PrivateRoute } from "./components/PrivateRoute";
 
@@ -26,6 +28,11 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup/renter" element={<SignUpRenters />} />
         <Route path="/signup/owner" element={<SignUpOwners />} />
+        <Route path="/forgetPassword" element={<ForgetPassword />} />
+        <Route
+          path="/resetPassword/:userId/:token"
+          element={<ResetPassword />}
+        />
       </Routes>
     </Router>
   );

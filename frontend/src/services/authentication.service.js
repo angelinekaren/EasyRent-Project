@@ -67,10 +67,38 @@ function getCurrentUser() {
   return JSON.parse(localStorage.getItem("user"));
 }
 
+function forgetPassword(email) {
+  return axios.post(
+    "http://localhost:5000/forgetPassword/",
+    JSON.stringify({ email }),
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+}
+
+function resetPassword(userId, token, password) {
+  const data = JSON.stringify({
+    userId,
+    token,
+    password,
+  });
+
+  return axios.put("http://localhost:5000/resetPassword/", data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
+
 export const authenticationService = {
   login,
   logout,
   registerLanlord,
   registerTenant,
   getCurrentUser,
+  forgetPassword,
+  resetPassword,
 };
