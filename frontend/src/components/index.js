@@ -1,0 +1,10 @@
+export { default as WelcomeSection } from "./WelcomeSection/WelcomeSection";
+export { default as IntroSection } from "./IntroSection/IntroSection";
+export { default as ExploreSection } from "./ExploreSection/ExploreSection";
+export { default as AboutSection } from "./AboutSection/AboutSection";
+export { default as JoinUsSection } from "./JoinUsSection/JoinUsSection";
+export { default as ContactSection } from "./ContactSection/ContactSection";
+export { default as RenterRecommendation } from "./RenterRecommendation/RenterRecommendation";
+export { default as ExplainSection } from "./ExplainSection/ExplainSection";
+export { default as InstructionSection } from "./InstructionSection/InstructionSection";
+export { default as ContactAboutus } from "./ContactSection/ContactAboutus";
