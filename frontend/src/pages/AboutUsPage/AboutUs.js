@@ -7,6 +7,8 @@ import {
   ContactAboutus,
 } from "../../components";
 
+import { explainObjOne, instructionRenter, instructionLandlord } from "./Data";
+
 import { authenticationService } from "../../services/authentication.service";
 
 const AboutUs = () => {
@@ -17,9 +19,17 @@ const AboutUs = () => {
         <>
           {currentUser.user.role === "tenant" && (
             <>
-              <ExplainSection />
+              <ExplainSection {...explainObjOne} />
               <ExploreSection />
-              <InstructionSection />
+              <InstructionSection {...instructionRenter} />
+              <ContactAboutus />
+            </>
+          )}
+          {currentUser.user.role === "landlord" && (
+            <>
+              <ExplainSection {...explainObjOne} />
+              <ExploreSection />
+              <InstructionSection {...instructionLandlord} />
               <ContactAboutus />
             </>
           )}

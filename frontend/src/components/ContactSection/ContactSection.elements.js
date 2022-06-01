@@ -12,6 +12,12 @@ export const SectionCustom = styled.div`
   color: #000;
 `;
 
+export const SectionNew = styled.div`
+  background: #f5f5f5;
+  padding: 130px 0 110px 0;
+  color: #000;
+`;
+
 export const HeadingWrapper = styled.div`
   display: flex;
   flex-direction: column;

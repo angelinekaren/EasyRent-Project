@@ -1,26 +1,31 @@
 import Navbar from "./Navbar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavbarOwners from "./NavbarOwners";
 import NavbarRenters from "./NavbarRenters";
 import NavbarAdmin from "./NavbarAdmin";
 import { Outlet } from "react-router";
 import Footer from "./Footer/Footer";
-import { authenticationService } from "../services/authentication.service";
+import { useSelector } from "react-redux";
+
+// import { authenticationService } from "../services/authentication.service";
 
 function NavLayout() {
-  const currentUser = authenticationService.getCurrentUser();
+  // const currentUser = authenticationService.getCurrentUser();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { user } = userLogin;
 
   return (
     <div>
       {(() => {
-        if (currentUser) {
-          if (currentUser.user.role === "admin") {
+        if (user) {
+          console.log(user);
+          if (user.user.role === "admin") {
             return <NavbarAdmin />;
           }
-          if (currentUser.user.role === "landlord") {
+          if (user.user.role === "landlord") {
             return <NavbarOwners />;
           }
-          if (currentUser.user.role === "tenant") {
+          if (user.user.role === "tenant") {
             return <NavbarRenters />;
           }
         } else {

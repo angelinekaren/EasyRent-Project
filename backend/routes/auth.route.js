@@ -1,12 +1,18 @@
 const express = require("express");
 const router = express.Router();
+
 const {
   TenantRegister,
   LanlordRegister,
   Login,
   reqPasswordReset,
   passwordReset,
+  updateProfile,
+  changePassword,
+  refreshTokens,
 } = require("../controllers/auth.controllers");
+
+const { requireSignIn } = require("../middleware/checkAuth");
 
 router.get("/", async (req, res, next) => {
   res.send("hi");
@@ -31,5 +37,10 @@ router.get("/logout", async (req, res, next) => {
 
 router.post("/forgetPassword", reqPasswordReset);
 router.put("/resetPassword", passwordReset);
+
+router.put("/account", requireSignIn, updateProfile);
+router.put("/account/changePassword", requireSignIn, changePassword);
+
+// router.post("/refreshToken", refreshTokens);
 
 module.exports = router;

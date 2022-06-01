@@ -1,4 +1,6 @@
 import image from "../../images/mainHomeIcon.svg";
+import tenantImage from "../../images/tenant_home.svg";
+import landlordImage from "../../images/landlord_home.svg";
 
 export const homeObjOne = {
   lightBg: false,
@@ -27,8 +29,21 @@ export const homeObjTenant = {
   description: "Start surfing your future rental room or houses with us.",
   buttonLabel: "Start Now",
   btnLabel: "Learn More",
-  img: image,
+  img: tenantImage,
   alt: "Tenant Home Image",
+  imgStart: "",
+};
+
+export const homeObjLandlord = {
+  lightBg: false,
+  start: "",
+  title: "Hello,",
+  titleDetail: "Owner!",
+  description: "Start promoting your rental rooms or houses with us.",
+  buttonLabel: "Start Now",
+  btnLabel: "Learn More",
+  img: landlordImage,
+  alt: "Lanlord Home Image",
   imgStart: "",
 };
 
@@ -39,6 +54,15 @@ export const homeObjTenantIntro = {
   heading4: "",
   subheading: "",
   btnLabel: "Explore Now",
+};
+
+export const homeObjLandlordIntro = {
+  heading: "Learn more on",
+  heading2: "how to promote your rooms or houses",
+  heading3: "?",
+  heading4: "",
+  subheading: "",
+  btnLabel: "Click here",
 };
 
 export const homeObjTwo = {

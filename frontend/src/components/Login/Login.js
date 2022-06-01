@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Fade, InputAdornment } from "@mui/material";
 import { Container, Button, CssTextField } from "../../GlobalStyles";
 import PersonIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -9,6 +9,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import ArrowIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../actions/auth";
 
 import {
   LoginSection,
@@ -29,7 +31,7 @@ import {
   MessageSubheading,
 } from "./Login.elements";
 
-import { authenticationService } from "../../services/authentication.service";
+import Loading from "../Loading";
 
 const Login = () => {
   const [values, setValues] = useState({
@@ -49,37 +51,31 @@ const Login = () => {
     });
   };
 
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+  // const [error, setError] = useState("");
+  // const [message, setMessage] = useState("");
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { loading, error, message, user } = userLogin;
 
   const { email, password } = values;
 
-  const handleSubmit = async (e) => {
-    try {
-      e.preventDefault();
-
-      await authenticationService.login(email, password).then((res) => {
-        navigate("/");
-        //   console.log(res.data);
-        // setMessage(res.message);
-        // console.log(res.data.message);
-        // console.log(res.data);
-        // return res.data;
-      });
-    } catch (err) {
-      // Error message
-      if (
-        err.response.status === 400 ||
-        err.response.status === 401 ||
-        err.response.status === 404 ||
-        err.response.status === 500
-      ) {
-        setError(err.response.data.message);
-      } else {
-        return Promise.reject(err);
-      }
+  useEffect(() => {
+    if (user) {
+      navigate("/");
     }
+    return user;
+  }, [user]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    dispatch(login(email, password)).then(() => {
+      navigate("/");
+      window.location.reload();
+    });
   };
 
   const handleMouseDown = (event) => {
@@ -105,6 +101,7 @@ const Login = () => {
                   <LoginHeading>Log In</LoginHeading>
                   {message && <MessageSubheading>{message}</MessageSubheading>}
                   {error && <ErrorSubheading>{error}</ErrorSubheading>}
+                  {loading && <Loading />}
                   <Form onSubmit={handleSubmit}>
                     <CssTextField
                       className="email-input"

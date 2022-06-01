@@ -14,7 +14,9 @@ import Logout from "@mui/icons-material/Logout";
 import AccountIcon from "@mui/icons-material/AccountCircleRounded";
 import HomeIcon from "@mui/icons-material/Home";
 import UsersIcon from "@mui/icons-material/GroupRounded";
-import { authenticationService } from "../../services/authentication.service";
+// import { authenticationService } from "../../services/authentication.service";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../actions/auth";
 
 import {
   SidebarLink,
@@ -59,15 +61,20 @@ const NavbarAdmin = () => {
     setAnchorEl(null);
   };
 
-  const changeNavbarColor = () => {
-    if (window.scrollY >= 80) {
-      setNavChangeColor(true);
-    } else {
-      setNavChangeColor(false);
-    }
-  };
+  useEffect(() => {
+    const changeNavbarColor = () => {
+      if (window.scrollY >= 80) {
+        setNavChangeColor(true);
+      } else {
+        setNavChangeColor(false);
+      }
+    };
 
-  window.addEventListener("scroll", changeNavbarColor);
+    window.addEventListener("scroll", changeNavbarColor);
+    return () => {
+      window.addEventListener("scroll", changeNavbarColor);
+    };
+  }, []);
 
   useEffect(() => {
     if (window.innerWidth < 1065) {
@@ -110,11 +117,14 @@ const NavbarAdmin = () => {
     setSidebar(false);
   };
 
-  const logout = () => {
-    authenticationService.logout();
-  };
+  const userLogin = useSelector((state) => state.userLogin);
+  const { user } = userLogin;
 
-  const currentUser = authenticationService.getCurrentUser();
+  const dispatch = useDispatch();
+
+  const logOut = () => {
+    dispatch(logout());
+  };
 
   return (
     <>
@@ -201,7 +211,7 @@ const NavbarAdmin = () => {
                   </MenuItem>
                   <Divider />
                   <MenuItem>
-                    <NavMenuLink to="/login" onClick={logout}>
+                    <NavMenuLink to="/login" onClick={logOut}>
                       <ListItemIcon>
                         <Logout fontSize="medium" />
                       </ListItemIcon>
@@ -239,7 +249,7 @@ const NavbarAdmin = () => {
                 <SidebarIcon>
                   <AccountIcon sx={{ fontSize: "40px", color: "#2bc66a" }} />
                 </SidebarIcon>
-                <AccName>{currentUser.user.fullname}</AccName>
+                <AccName>{user.user.fullname}</AccName>
               </SidebarCardDetail>
             </SidebarAccCard>
           </SideLink>
@@ -259,7 +269,7 @@ const NavbarAdmin = () => {
           <SideMenu>
             <Divider style={{ width: "100%" }} />
             <SidebarItem>
-              <SidebarLink to="/login" onClick={logout}>
+              <SidebarLink to="/login" onClick={logOut}>
                 <Logout style={{ color: "black", marginRight: "0.7rem" }} />
                 Logout
               </SidebarLink>

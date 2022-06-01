@@ -1,10 +1,29 @@
 const jwt = require("jsonwebtoken");
+const asyncHandler = require("express-async-handler");
 
 const dotenv = require("dotenv");
 dotenv.config();
 
+requireSignIn = asyncHandler(async (req, res, next) => {
+  let token = req.headers["authorization"];
+  if (!token) {
+    return res
+      .status(403)
+      .json({ message: "Not authorized! No token provided! " });
+  } else {
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ message: "Unauthorized!" });
+      } else {
+        req.userId = decoded.id;
+        next();
+      }
+    });
+  }
+});
+
 renterAuth = (req, res, next) => {
-  let token = req.headers["x-access-token"];
+  let token = req.headers["authorization"];
   if (!token) {
     // FORBIDDEN, refuse to authorize
     return res
@@ -29,7 +48,7 @@ renterAuth = (req, res, next) => {
 };
 
 ownerAuth = (req, res, next) => {
-  let token = req.headers["x-access-token"];
+  let token = req.headers["authorization"];
   if (!token) {
     // FORBIDDEN, refuse to authorize
     return res
@@ -77,6 +96,7 @@ adminAuth = (req, res, next) => {
 };
 
 const checkAuth = {
+  requireSignIn,
   renterAuth,
   ownerAuth,
   adminAuth,

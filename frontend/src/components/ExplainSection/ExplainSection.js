@@ -2,8 +2,6 @@ import React from "react";
 import { Container } from "../../GlobalStyles";
 import { Fade } from "@mui/material";
 
-import image from "../../images/aboutusIcon.svg";
-
 import {
   Section,
   ExplainRow,
@@ -18,7 +16,7 @@ import {
   Img,
 } from "./ExplainSection.elements";
 
-const ExplainSection = () => {
+const ExplainSection = ({ heading1, heading2, heading3, subtitle, image }) => {
   return (
     <>
       <Section>
@@ -28,18 +26,11 @@ const ExplainSection = () => {
               <ExplainColumn>
                 <TextWrapper>
                   <TextTitle>
-                    <Title>What is</Title>
-                    <TitleGreen>EasyRent</TitleGreen>
-                    <TitleMark>?</TitleMark>
+                    <Title>{heading1}</Title>
+                    <TitleGreen>{heading2}</TitleGreen>
+                    <TitleMark>{heading3}</TitleMark>
                   </TextTitle>
-                  <Subtitle>
-                    EasyRent is a platform created to provide the ease of
-                    experience for both renters and property owners to rent
-                    houses. Search for contract or boarding houses that meet
-                    your needs within a location. EasyRent has over 1,000 houses
-                    in Indonesia and is constantly expanding to provide you with
-                    better services and more houses all over the country.{" "}
-                  </Subtitle>
+                  <Subtitle>{subtitle}</Subtitle>
                 </TextWrapper>
               </ExplainColumn>
               <ExplainColumn>

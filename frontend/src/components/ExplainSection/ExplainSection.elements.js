@@ -15,7 +15,7 @@ export const ExplainRow = styled.div`
 `;
 
 export const ExplainColumn = styled.div`
-  margin-bottom: 70px;
+  margin-bottom: 150px;
   padding-right: 20px;
   padding-left: 20px;
   flex: 1;
@@ -61,7 +61,7 @@ export const TitleGreen = styled.h1`
   line-height: 1;
   font-weight: 600;
   color: #2bc66a;
-  margin-bottom: 22px;
+  margin-bottom: 8px;
 `;
 
 export const TitleMark = styled.h1`
@@ -69,6 +69,7 @@ export const TitleMark = styled.h1`
   line-height: 1;
   font-weight: 600;
   color: #000;
+  margin-bottom: 15px;
 `;
 export const Subtitle = styled.p`
   max-width: 490px;

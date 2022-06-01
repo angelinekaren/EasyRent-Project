@@ -18,7 +18,9 @@ import ExploreIcon from "@mui/icons-material/Explore";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
 import CallIcon from "@mui/icons-material/Call";
-import { authenticationService } from "../../services/authentication.service";
+// import { authenticationService } from "../../services/authentication.service";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../actions/auth";
 
 import {
   Nav,
@@ -64,15 +66,20 @@ const NavbarRenters = () => {
     setAnchorEl(null);
   };
 
-  const changeNavbarColor = () => {
-    if (window.scrollY >= 80) {
-      setNavChangeColor(true);
-    } else {
-      setNavChangeColor(false);
-    }
-  };
+  useEffect(() => {
+    const changeNavbarColor = () => {
+      if (window.scrollY >= 80) {
+        setNavChangeColor(true);
+      } else {
+        setNavChangeColor(false);
+      }
+    };
 
-  window.addEventListener("scroll", changeNavbarColor);
+    window.addEventListener("scroll", changeNavbarColor);
+    return () => {
+      window.addEventListener("scroll", changeNavbarColor);
+    };
+  }, []);
 
   useEffect(() => {
     if (window.innerWidth < 1065) {
@@ -126,11 +133,14 @@ const NavbarRenters = () => {
     }
   }, [sidebar]);
 
-  const logout = () => {
-    authenticationService.logout();
-  };
+  const userLogin = useSelector((state) => state.userLogin);
+  const { user } = userLogin;
 
-  const currentUser = authenticationService.getCurrentUser();
+  const dispatch = useDispatch();
+
+  const logOut = () => {
+    dispatch(logout());
+  };
 
   return (
     <>
@@ -233,7 +243,7 @@ const NavbarRenters = () => {
                   </MenuItem>
                   <Divider />
                   <MenuItem>
-                    <NavMenuLink to="/login" onClick={logout}>
+                    <NavMenuLink to="/login" onClick={logOut}>
                       <ListItemIcon>
                         <Logout fontSize="medium" />
                       </ListItemIcon>
@@ -266,13 +276,13 @@ const NavbarRenters = () => {
         )}
         <SidebarMenu>
           <SidebarItem>
-            <SideLink to="/account">
+            <SideLink to="/account" onClick={() => setSidebar(false)}>
               <SidebarAccCard>
                 <SidebarCardDetail>
                   <SidebarIcon>
                     <AccountIcon sx={{ fontSize: "40px", color: "#2bc66a" }} />
                   </SidebarIcon>
-                  <AccName>{currentUser.user.fullname}</AccName>
+                  <AccName>{user.user.fullname}</AccName>
                 </SidebarCardDetail>
               </SidebarAccCard>
             </SideLink>
@@ -305,7 +315,7 @@ const NavbarRenters = () => {
           <SideMenu>
             <Divider style={{ width: "100%" }} />
             <SidebarItem>
-              <SidebarLink to="/login" onClick={logout}>
+              <SidebarLink to="/login" onClick={logOut}>
                 <Logout style={{ color: "black", marginRight: "0.7rem" }} />
                 Logout
               </SidebarLink>

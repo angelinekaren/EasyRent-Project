@@ -5,15 +5,18 @@ import {
   ExploreSection,
   AboutSection,
   JoinUsSection,
-  ContactSection,
+  ContactHomeSection,
   RenterRecommendation,
+  LandlordPost,
 } from "../../components";
 import {
   homeObjOne,
   homeObjTwo,
   homeObjThree,
   homeObjTenant,
+  homeObjLandlord,
   homeObjTenantIntro,
+  homeObjLandlordIntro,
 } from "./Data";
 import { authenticationService } from "../../services/authentication.service";
 
@@ -28,7 +31,15 @@ const Home = () => {
               <WelcomeSection {...homeObjTenant} />
               <IntroSection {...homeObjTenantIntro} />
               <RenterRecommendation />
-              <ContactSection />
+              <ContactHomeSection />
+            </>
+          )}
+          {currentUser.user.role === "landlord" && (
+            <>
+              <WelcomeSection {...homeObjLandlord} />
+              <IntroSection {...homeObjLandlordIntro} />
+              <LandlordPost />
+              <ContactHomeSection />
             </>
           )}
         </>
@@ -40,7 +51,7 @@ const Home = () => {
           <ExploreSection />
           <AboutSection />
           <JoinUsSection {...homeObjThree} />
-          <ContactSection />
+          <ContactHomeSection />
         </>
       )}
     </>

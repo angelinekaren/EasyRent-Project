@@ -18,7 +18,7 @@ import { FaEnvelope, FaWhatsapp } from "react-icons/fa";
 
 import { BtnWrapper } from "../IntroSection/IntroSection.elements";
 
-const ContactSection = ({ heading, subheading }) => {
+const ContactSection = () => {
   const currentUser = authenticationService.getCurrentUser();
   return (
     <>

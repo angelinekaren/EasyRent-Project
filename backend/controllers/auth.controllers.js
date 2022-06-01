@@ -3,15 +3,18 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const crypto = require("crypto");
+const asyncHandler = require("express-async-handler");
 const Token = require("../models/token.model");
+const generateToken = require("../utils/generateToken");
 const sendEmail = require("../utils/sendEmail");
+// const RefreshToken = require("../models/refreshToken.model");
 dotenv.config();
 
 // Tenant register controller
 const TenantRegister = async (req, res) => {
   const { fullname, username, gender, email, password, role } = req.body;
   try {
-    Tenant.findOne({ $or: [{ email: email }, { username: username }] }).then(
+    User.findOne({ $or: [{ email: email }, { username: username }] }).then(
       (user) => {
         if (user) {
           let errors = "";
@@ -57,7 +60,7 @@ const TenantRegister = async (req, res) => {
 const LanlordRegister = async (req, res) => {
   const { fullname, username, mobile_phone, email, password, role } = req.body;
   try {
-    Landlord.findOne({ $or: [{ email: email }, { username: username }] }).then(
+    User.findOne({ $or: [{ email: email }, { username: username }] }).then(
       (user) => {
         if (user) {
           let errors = "";
@@ -103,7 +106,7 @@ const LanlordRegister = async (req, res) => {
 const Login = async (req, res) => {
   User.findOne({
     email: req.body.email,
-  }).exec((err, user) => {
+  }).exec(async (err, user) => {
     if (err) {
       // internal server error
       return res.status(500).json({ message: err });
@@ -121,15 +124,8 @@ const Login = async (req, res) => {
         message: "Invalid password",
       });
     }
-    var token = jwt.sign(
-      {
-        id: user._id,
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: process.env.JWT_EXPIRES_IN,
-      }
-    );
+    var token = generateToken(user._id);
+    // var refreshToken = await RefreshToken.createRefreshToken(user);
     return res.status(201).json({
       message: "User successfully logged in!",
       user,
@@ -137,6 +133,40 @@ const Login = async (req, res) => {
     });
   });
 };
+
+// const refreshToken = async (req, res) => {
+//   const { refreshToken: requestRefreshToken } = req.body;
+//   if (requestRefreshToken) {
+//     return res.status(403).json({ message: "Refresh Token is required!" });
+//   }
+//   try {
+//     var refreshToken = await RefreshToken.findOne({
+//       token: requestRefreshToken,
+//     });
+//     if (!refreshToken) {
+//       res.status(403).json({ message: "Refresh token is not available!" });
+//       return;
+//     }
+//     if (RefreshToken.verifyDate(refreshToken)) {
+//       RefreshToken.findByIdAndRemove(refreshToken._id, {
+//         useFindAndModify: false,
+//       });
+
+//       res.status(403).json({
+//         message: "Refresh token expired. Please login!",
+//       });
+//       return;
+//     }
+//     var newAccessToken = generateToken(refreshToken.user._id);
+//     return res.status(200).json({
+//       accessToken: newAccessToken,
+//       refreshToken: refreshToken.token,
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(500).json({ message: "An error occured", error: err });
+//   }
+// };
 
 const reqPasswordReset = async (req, res) => {
   User.findOne({ email: req.body.email }).exec((err, user) => {
@@ -224,10 +254,79 @@ const passwordReset = async (req, res) => {
   }
 };
 
+const updateProfile = asyncHandler(async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (user) {
+      if (user.role === "tenant") {
+        user.email = req.body.email || user.email;
+        user.username = req.body.username || user.email;
+        user.fullname = req.body.fullname || user.fullname;
+      }
+      if (user.role === "landlord") {
+        user.email = req.body.email || user.email;
+        user.username = req.body.username || user.email;
+        user.fullname = req.body.fullname || user.fullname;
+        user.mobile_phone = req.body.mobile_phone || user.mobile_phone;
+      }
+
+      const updated = await user.save();
+      return res.status(201).json({
+        message: "Successfully updated!",
+        user: updated,
+        accessToken: generateToken(user._id),
+      });
+    } else {
+      return res.status(404).json({ message: "User not found" });
+    }
+  } catch (err) {
+    return res.status(400).json({ message: "Username or email is taken!" });
+  }
+});
+
+const changePassword = asyncHandler(async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (user) {
+      if (req.body.password === req.body.confirmPassword) {
+        var passwdIsValid = bcrypt.compareSync(
+          req.body.password,
+          user.password
+        );
+        if (passwdIsValid) {
+          return res.status(400).json({
+            message: "New password should not be the same as before",
+          });
+        } else {
+          bcrypt.hash(req.body.password, 10).then(async (hashedPswd) => {
+            user.password = hashedPswd;
+            await user.save();
+            return res.status(201).json({
+              message: "Password successfully changed!",
+              user,
+              accessToken: generateToken(user._id),
+            });
+          });
+        }
+      } else {
+        return res.status(400).json({
+          message: "Password don't match",
+        });
+      }
+    } else {
+      return res.status(404).json({ message: "User not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: "An error occured" });
+  }
+});
+
 module.exports = {
   TenantRegister,
   LanlordRegister,
   Login,
   reqPasswordReset,
   passwordReset,
+  updateProfile,
+  changePassword,
 };

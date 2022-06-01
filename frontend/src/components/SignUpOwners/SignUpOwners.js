@@ -12,6 +12,9 @@ import LockIcon from "@mui/icons-material/HttpsOutlined";
 import ArrowIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import PhoneIcon from "@mui/icons-material/Phone";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { useDispatch, useSelector } from "react-redux";
+import { registerLanlord } from "../../actions/auth";
+import Loading from "../Loading";
 
 import {
   OwnersSection,
@@ -34,9 +37,6 @@ import {
   MessageSubheading,
 } from "./SignUpOwners.elements";
 
-import { useNavigate } from "react-router-dom";
-import { authenticationService } from "../../services/authentication.service";
-
 const SignUpOwners = () => {
   const [values, setValues] = useState({
     fullname: "",
@@ -48,57 +48,39 @@ const SignUpOwners = () => {
     showPassword: false,
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const handleShowPassword = (fieldName) => {
-    setValues({
-      ...values,
-      showPassword: fieldName === values.showPassword ? "" : fieldName,
-    });
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleMouseDown = (event) => {
     event.preventDefault();
   };
 
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const landlordSignup = useSelector((state) => state.userRegister);
+  const messages = useSelector((state) => state.message);
+
+  const { loading, error } = landlordSignup;
+  const { message } = messages;
 
   const { fullname, username, mobile_phone, email, password, role } = values;
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     try {
       e.preventDefault();
 
-      await authenticationService
-        .registerLanlord(
-          fullname,
-          username,
-          mobile_phone,
-          email,
-          password,
-          role
-        )
-        .then((res) => {
-          //   console.log(res.data);
-          setMessage(res.data.message);
-          console.log(res.data);
-          return res.data;
-        });
+      dispatch(
+        registerLanlord(fullname, username, mobile_phone, email, password, role)
+      );
     } catch (err) {
-      // Error message
-      if (
-        err.response.status === 400 ||
-        err.response.status === 401 ||
-        err.response.status === 404 ||
-        err.response.status === 500
-      ) {
-        setError(err.response.data.message);
-      }
+      console.log(err);
     }
   };
 
@@ -122,6 +104,7 @@ const SignUpOwners = () => {
                   <OwnersSubHeading>for Property Owner</OwnersSubHeading>
                   {error && <ErrorSubheading>{error}</ErrorSubheading>}
                   {message && <MessageSubheading>{message}</MessageSubheading>}
+                  {loading && <Loading />}
                   <Form onSubmit={handleSubmit}>
                     <CssTextField
                       className="fullname-input"
@@ -222,9 +205,7 @@ const SignUpOwners = () => {
                       id="password"
                       label="Enter password"
                       variant="outlined"
-                      type={
-                        values.showPassword === "password" ? "text" : "password"
-                      }
+                      type={showPassword ? "text" : "password"}
                       value={values.password}
                       onChange={handleChange("password")}
                       InputProps={{
@@ -242,11 +223,11 @@ const SignUpOwners = () => {
                         endAdornment: (
                           <InputAdornment position="end">
                             <IconButton
-                              onClick={() => handleShowPassword("password")}
+                              onClick={handleShowPassword}
                               onMouseDown={handleMouseDown}
                               sx={{ marginRight: "0.5px" }}
                             >
-                              {values.showPassword === "password" ? (
+                              {showPassword ? (
                                 <Visibility />
                               ) : (
                                 <VisibilityOff />
@@ -271,7 +252,6 @@ const SignUpOwners = () => {
                     <Button
                       type="submit"
                       style={{ padding: "12px 120px", marginTop: "1.2rem" }}
-                      disabled={loading}
                     >
                       Submit
                     </Button>

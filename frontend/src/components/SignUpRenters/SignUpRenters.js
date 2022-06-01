@@ -12,6 +12,9 @@ import { Fade, InputAdornment } from "@mui/material";
 import LockIcon from "@mui/icons-material/HttpsOutlined";
 import ArrowIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "../Loading";
+import { registerTenant } from "../../actions/auth";
 
 import {
   RentersSection,
@@ -35,7 +38,6 @@ import {
   ErrorSubheading,
   MessageSubheading,
 } from "./SignUpRenters.elements";
-import { authenticationService } from "../../services/authentication.service";
 
 const SignUpRenters = () => {
   const [values, setValues] = useState({
@@ -57,35 +59,29 @@ const SignUpRenters = () => {
     setShowPassword(!showPassword);
   };
 
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+  const handleMouseDown = (event) => {
+    event.preventDefault();
+  };
+
+  const dispatch = useDispatch();
+
+  const renterSignup = useSelector((state) => state.userRegister);
+  const messages = useSelector((state) => state.message);
+
+  const { loading, error } = renterSignup;
+  const { message } = messages;
 
   const { fullname, username, gender, email, password, role } = values;
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     try {
       e.preventDefault();
 
-      await authenticationService
-        .registerTenant(fullname, username, gender, email, password, role)
-        .then((res) => {
-          //   console.log(res.data);
-          setMessage(res.data.message);
-          console.log(res.data);
-          return res.data;
-        });
+      dispatch(
+        registerTenant(fullname, username, gender, email, password, role)
+      );
     } catch (err) {
-      // Error message
-      if (
-        err.response.status === 400 ||
-        err.response.status === 401 ||
-        err.response.status === 404 ||
-        err.response.status === 500
-      ) {
-        setError(err.response.data.message);
-        console.log(err.response);
-        // console.log(err.response.data.message);
-      }
+      console.log(err);
     }
   };
 
@@ -109,6 +105,7 @@ const SignUpRenters = () => {
                   <RentersSubHeading>for Rental Searchers</RentersSubHeading>
                   {error && <ErrorSubheading>{error}</ErrorSubheading>}
                   {message && <MessageSubheading>{message}</MessageSubheading>}
+                  {loading && <Loading />}
                   <Form onSubmit={handleSubmit}>
                     <CssTextField
                       className="fullname-input"
@@ -218,6 +215,7 @@ const SignUpRenters = () => {
                           <InputAdornment position="end">
                             <IconButton
                               onClick={handleShowPassword}
+                              onMouseDown={handleMouseDown}
                               sx={{ marginRight: "0.5px" }}
                             >
                               {showPassword ? (
