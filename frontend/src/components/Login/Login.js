@@ -67,7 +67,7 @@ const Login = () => {
       navigate("/");
     }
     return user;
-  }, [user]);
+  }, [user, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

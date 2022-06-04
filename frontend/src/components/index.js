@@ -11,3 +11,8 @@ export { default as ContactAboutus } from "./ContactSection/ContactAboutus";
 export { default as ContactusSection } from "./ContactSection/ContactusSection";
 export { default as LandlordPost } from "./LandlordPostSection/LandlordPost";
 export { default as TenantAccount } from "./TenantAccount/TenantAccount";
+export { default as AddProperty } from "./AddProperty/AddProperty";
+export { default as VerifyLandlordSection } from "./VerifyLandlordSection/VerifyLandlordSection";
+export { default as Verifying } from "./VerifyLandlordSection/Verifying";
+export { default as FormAddProperty } from "./AddProperty/FormAddProperty";
+export { default as PropertyList } from "./PropertyList/PropertyList";

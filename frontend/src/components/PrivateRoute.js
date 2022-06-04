@@ -1,26 +1,24 @@
-import React from "react";
-import { Route, Navigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter as Route, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { unauthorized, logout } from "../actions/auth";
 
-import { authenticationService } from "../services/authentication.service";
+export const PrivateRoute = ({ children }) => {
+  const dispatch = useDispatch();
+  const [authenticated, setAuthenticated] = useState(false);
+  const userLogin = useSelector((state) => state.userLogin);
+  const { user } = userLogin;
 
-export const PrivateRoute = ({ component: Component, roles, ...rest }) => (
-  <Route
-    {...rest}
-    render={(props) => {
-      const currentUser = authenticationService.getCurrentUser();
-      if (!currentUser) {
-        // not logged in so redirect to login page with the return url
-        return <Navigate to="/login" />;
-      }
+  dispatch(unauthorized())
+    .then(() => setAuthenticated(true))
+    .catch((err) => {
+      console.log(err);
+      setAuthenticated(false);
+    });
 
-      // check if route is restricted by role
-      if (roles && roles.indexOf(currentUser.role) === -1) {
-        // role not authorised so redirect to home page
-        return <Navigate to="/" />;
-      }
-
-      // authorised so return component
-      return <Component {...props} />;
-    }}
-  />
-);
+  if (!authenticated) {
+    return <Navigate to={"/login"} replace />;
+  }
+  return children;
+};

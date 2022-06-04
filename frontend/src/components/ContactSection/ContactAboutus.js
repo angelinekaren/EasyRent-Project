@@ -23,7 +23,7 @@ const ContactAboutus = () => {
           </ContactSubheading>
         </HeadingWrapper>
         <BtnWrapper>
-          <Link to="aboutus">
+          <Link to="/contactus">
             <Button big>Contact Us</Button>
           </Link>
         </BtnWrapper>

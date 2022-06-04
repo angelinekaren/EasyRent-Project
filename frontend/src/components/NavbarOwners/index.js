@@ -283,7 +283,10 @@ const NavbarOwners = () => {
             </SidebarLink>
           </SidebarItem>
           <SidebarItem>
-            <SidebarLink to="/explore" onClick={() => setSidebar(false)}>
+            <SidebarLink
+              to="/your-properties"
+              onClick={() => setSidebar(false)}
+            >
               <PropertyIcon style={{ color: "black", marginRight: "0.7rem" }} />
               Your Properties
             </SidebarLink>

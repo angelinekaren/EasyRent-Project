@@ -8,7 +8,6 @@ import {
   Alert,
 } from "@mui/material";
 import { useState, useEffect } from "react";
-// import { authenticationService } from "../services/authentication.service";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProfile } from "../actions/auth";
 import Loading from "./Loading";
@@ -20,9 +19,7 @@ const EditProfile = (props) => {
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
-  // const currentUser = authenticationService.getCurrentUser();
 
-  // const [error, setError] = useState("");
   const { message } = useSelector((state) => state.message);
 
   const userLogin = useSelector((state) => state.userLogin);

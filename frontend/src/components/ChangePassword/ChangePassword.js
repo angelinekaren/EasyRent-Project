@@ -24,7 +24,6 @@ import {
   Form,
   ArrowLink,
 } from "./ChangePassword.elements";
-import { OpenInBrowser } from "@mui/icons-material";
 
 const ChangePassword = () => {
   const navigate = useNavigate();

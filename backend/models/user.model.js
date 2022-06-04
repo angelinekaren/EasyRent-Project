@@ -31,6 +31,15 @@ const landlordSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  selfie_image: {
+    type: String,
+  },
+  ktp_image: {
+    type: String,
+  },
+  isVerified: {
+    type: Boolean,
+  },
 });
 
 const tenantSchema = new mongoose.Schema({

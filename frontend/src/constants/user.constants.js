@@ -20,6 +20,10 @@ export const USER_UPDATE_FAIL = "USER_UPDATE_FAIL";
 export const SET_MESSAGE = "SET_MESSAGE";
 export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
 
+// DATA
+export const SET_DATA = "SET_DATA";
+export const CLEAR_DATA = "CLEAR_DATA";
+
 // REFRESH TOKEN
 export const REFRESH_TOKEN = "REFRESH_TOKEN";
 

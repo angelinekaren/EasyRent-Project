@@ -95,4 +95,28 @@ export const CssTextField = styled(TextField)({
   },
 });
 
+export const TextFieldCustom = styled(TextField)({
+  "& label.Mui-focused": {
+    color: "green",
+  },
+  "& .MuiInput-underline:after": {
+    borderBottomColor: "green",
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#2bc66a",
+      borderRadius: "40px",
+      borderWidth: "medium",
+    },
+
+    "&:hover fieldset": {
+      borderColor: "#2bc66a",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "green",
+      borderWidth: "medium",
+    },
+  },
+});
+
 export default GlobalStyle;

@@ -15,6 +15,7 @@ import {
   USER_CHANGE_PASSWORD_SUCCESS,
   USER_CHANGE_PASSWORD_FAIL,
   REFRESH_TOKEN,
+  SET_DATA,
 } from "../constants/user.constants";
 
 import { authenticationService } from "../services/authentication.service";
@@ -28,6 +29,7 @@ export const registerTenant =
         (res) => {
           dispatch({ type: USER_REGISTER_SUCCESS });
           dispatch({ type: SET_MESSAGE, payload: res.data.message });
+
           return Promise.resolve();
         },
         (err) => {
@@ -35,6 +37,7 @@ export const registerTenant =
             (err.response && err.response.data && err.response.data.message) ||
             err.message ||
             err.toString();
+
           dispatch({
             type: USER_REGISTER_FAIL,
           });
@@ -110,6 +113,25 @@ export const logout = () => (dispatch) => {
   });
 };
 
+export const unauthorized = () => (dispatch) => {
+  authenticationService.unauthorized().then(
+    () => {
+      return Promise.resolve();
+    },
+    (err) => {
+      const message =
+        (err.response && err.response.data && err.response.data.message) ||
+        err.message ||
+        err.toString();
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+      return Promise.reject();
+    }
+  );
+};
+
 export const updateProfile = (userr) => async (dispatch, getState) => {
   dispatch({ type: USER_UPDATE_REQUEST });
 
@@ -124,7 +146,7 @@ export const updateProfile = (userr) => async (dispatch, getState) => {
     },
   };
 
-  return await axios.put("http://localhost:5000/account/", userr, config).then(
+  return await axios.put("/api/account/", userr, config).then(
     (res) => {
       dispatch({
         type: USER_UPDATE_SUCCESS,
@@ -167,7 +189,7 @@ export const changePassword = (passwords) => async (dispatch, getState) => {
   };
 
   return await axios
-    .put("http://localhost:5000/account/changePassword/", passwords, config)
+    .put("/api/account/changePassword/", passwords, config)
     .then(
       (res) => {
         dispatch({

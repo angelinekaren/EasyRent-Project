@@ -9,14 +9,25 @@ import {
   changePasswordReducer,
 } from "./reducers/auth";
 
+import {
+  faceMatchReducer,
+  verifiedUserReducer,
+  listingReducer,
+} from "./reducers/post.reducers";
+
 import messageReducers from "./reducers/message.reducers";
+import dataReducers from "./reducers/data.reducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userUpdate: userUpdateReducer,
   changePass: changePasswordReducer,
+  faceMatch: faceMatchReducer,
+  userVerifiedStatus: verifiedUserReducer,
+  listings: listingReducer,
   message: messageReducers,
+  data: dataReducers,
 });
 
 const middleware = [thunk];

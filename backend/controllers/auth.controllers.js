@@ -5,9 +5,8 @@ const dotenv = require("dotenv");
 const crypto = require("crypto");
 const asyncHandler = require("express-async-handler");
 const Token = require("../models/token.model");
-const generateToken = require("../utils/generateToken");
 const sendEmail = require("../utils/sendEmail");
-// const RefreshToken = require("../models/refreshToken.model");
+const generateToken = require("../utils/generateToken");
 dotenv.config();
 
 // Tenant register controller
@@ -81,6 +80,7 @@ const LanlordRegister = async (req, res) => {
                 mobile_phone: mobile_phone,
                 password: hashedPswd,
                 role: role,
+                isVerified: false,
               });
             })
             .then((landlord) => {
@@ -106,7 +106,7 @@ const LanlordRegister = async (req, res) => {
 const Login = async (req, res) => {
   User.findOne({
     email: req.body.email,
-  }).exec(async (err, user) => {
+  }).exec((err, user) => {
     if (err) {
       // internal server error
       return res.status(500).json({ message: err });
@@ -125,7 +125,6 @@ const Login = async (req, res) => {
       });
     }
     var token = generateToken(user._id);
-    // var refreshToken = await RefreshToken.createRefreshToken(user);
     return res.status(201).json({
       message: "User successfully logged in!",
       user,
@@ -134,39 +133,39 @@ const Login = async (req, res) => {
   });
 };
 
-// const refreshToken = async (req, res) => {
-//   const { refreshToken: requestRefreshToken } = req.body;
-//   if (requestRefreshToken) {
-//     return res.status(403).json({ message: "Refresh Token is required!" });
-//   }
-//   try {
-//     var refreshToken = await RefreshToken.findOne({
-//       token: requestRefreshToken,
-//     });
-//     if (!refreshToken) {
-//       res.status(403).json({ message: "Refresh token is not available!" });
-//       return;
-//     }
-//     if (RefreshToken.verifyDate(refreshToken)) {
-//       RefreshToken.findByIdAndRemove(refreshToken._id, {
-//         useFindAndModify: false,
-//       });
+const refreshToken = async (req, res) => {
+  const { refreshToken: requestRefreshToken } = req.body;
+  if (requestRefreshToken) {
+    return res.status(403).json({ message: "Refresh Token is required!" });
+  }
+  try {
+    var refreshToken = await RefreshToken.findOne({
+      token: requestRefreshToken,
+    });
+    if (!refreshToken) {
+      res.status(403).json({ message: "Refresh token is not valid!" });
+      return;
+    }
+    if (RefreshToken.verifyDate(refreshToken)) {
+      RefreshToken.findByIdAndRemove(refreshToken._id, {
+        useFindAndModify: false,
+      });
 
-//       res.status(403).json({
-//         message: "Refresh token expired. Please login!",
-//       });
-//       return;
-//     }
-//     var newAccessToken = generateToken(refreshToken.user._id);
-//     return res.status(200).json({
-//       accessToken: newAccessToken,
-//       refreshToken: refreshToken.token,
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     return res.status(500).json({ message: "An error occured", error: err });
-//   }
-// };
+      res.status(403).json({
+        message: "Refresh token expired. Please login!",
+      });
+      return;
+    }
+    var newAccessToken = generateToken(refreshToken.user._id);
+    return res.status(200).json({
+      accessToken: newAccessToken,
+      refreshToken: refreshToken.token,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "An error occured", error: err });
+  }
+};
 
 const reqPasswordReset = async (req, res) => {
   User.findOne({ email: req.body.email }).exec((err, user) => {

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
 
 const {
   TenantRegister,
@@ -9,7 +10,6 @@ const {
   passwordReset,
   updateProfile,
   changePassword,
-  refreshTokens,
 } = require("../controllers/auth.controllers");
 
 const { requireSignIn } = require("../middleware/checkAuth");
@@ -41,6 +41,10 @@ router.put("/resetPassword", passwordReset);
 router.put("/account", requireSignIn, updateProfile);
 router.put("/account/changePassword", requireSignIn, changePassword);
 
-// router.post("/refreshToken", refreshTokens);
+router.get("/verify", (req, res) => {
+  res.send("verify");
+});
+
+router.get("/privateRoute", requireSignIn);
 
 module.exports = router;
