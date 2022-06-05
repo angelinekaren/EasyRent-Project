@@ -18,8 +18,8 @@ const PostListing = asyncHandler(async (req, res) => {
     } = req.body;
     let userId = req.userId;
 
-    let image1 = req.files.housephotos[0].path;
-    let image2 = req.files.housecertif[0].path;
+    let image1 = req.files.housephotos[0].path.slice(8);
+    let image2 = req.files.housecertif[0].path.slice(8);
 
     await Listing.create({
       listingName: listingName,
@@ -67,11 +67,10 @@ const getAllListingsByUser = asyncHandler(async (req, res) => {
 const GetListing = (req, res) => {
   try {
     Listing.find().then((result) => {
-      res.send(result);
-      res.status(201);
+      res.status(201).json({ result });
     });
   } catch (err) {
-    return res.status(400);
+    return res.status(500).json({ message: "An error occured", error: err });
   }
 };
 
@@ -79,20 +78,27 @@ const GetListing = (req, res) => {
 const GetIndividualListing = (req, res) => {
   Listing.findById(req.params.id)
     .then((result) => {
-      res.send(result);
-      res.status(201);
+      res.status(201).json(result);
     })
     .catch((err) => {
-      res.status(404).json({ message: "Listing Not Found" });
+      res.status(404).json({ message: "Listing Not Found", error: err });
     });
 };
 
 // Update
 const UpdateListing = (req, res) => {
-  console.log(req.body);
-  Listing.findOneAndUpdate({ _id: req.params.id }, req.body).then(() => {
+  if (!req.body) {
+    return res.status(400).json({ message: "Input can not be empty!" });
+  }
+
+  // console.log(req.body);
+  Listing.findOneAndUpdate({ _id: req.params.id }, req.body).then((data) => {
+    if (data) {
+      return res.status(201).json({ message: "Successfully Updated" });
+    } else {
+      return res.status(500).json({ message: "An error occured!" });
+    }
     // res.send();
-    res.status(201).json({ message: "Successfully Updated" });
   });
 };
 

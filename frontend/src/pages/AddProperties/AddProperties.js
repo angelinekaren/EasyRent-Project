@@ -16,7 +16,7 @@ const AddProperties = () => {
           {user.user.role === "landlord" && (
             <>
               <VerifyLandlordSection />
-              <AddProperty />
+
               <PropertyList />
             </>
           )}

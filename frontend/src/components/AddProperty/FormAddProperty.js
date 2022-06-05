@@ -119,7 +119,10 @@ const FormAddProperty = () => {
     formData.append("housephotos", housePhoto);
     formData.append("housecertif", houseCertif);
 
-    dispatch(addListing(formData));
+    dispatch(addListing(formData)).then(() => {
+      navigate("/your-properties");
+      window.location.reload();
+    });
   };
 
   const { message } = useSelector((state) => state.message);

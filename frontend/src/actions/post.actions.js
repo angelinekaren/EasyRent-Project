@@ -122,7 +122,7 @@ export const storeVerifiedData = (formData) => async (dispatch, getState) => {
     );
 };
 
-export const addListing = (details) => (dispatch, getState) => {
+export const addListing = (details) => async (dispatch, getState) => {
   const {
     userLogin: { user },
   } = getState();
@@ -134,11 +134,11 @@ export const addListing = (details) => (dispatch, getState) => {
     },
   };
 
-  return axios.post("/api/listing/addListing", details, config).then(
+  return await axios.post("/api/listing/addListing", details, config).then(
     (res) => {
       dispatch({ type: ADD_LISTING, payload: res.data });
       dispatch({ type: SET_MESSAGE, payload: res.data.message });
-      return Promise.resolve();
+      return Promise.resolve(res.data);
     },
     (err) => {
       const message =
@@ -150,7 +150,7 @@ export const addListing = (details) => (dispatch, getState) => {
         type: SET_MESSAGE,
         payload: message,
       });
-      return Promise.reject();
+      return Promise.reject(err);
     }
   );
 };

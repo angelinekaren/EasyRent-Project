@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   PostListing,
   getAllListingsByUser,
+  GetIndividualListing,
 } = require("../controllers/listings.controllers");
 const multer = require("multer");
 const uuid = require("uuid");
@@ -30,5 +31,6 @@ router.post("/addListing", requireSignIn, [multipleImage, PostListing]);
 // });
 
 router.get("/getAllUserListing", requireSignIn, getAllListingsByUser);
+router.get("/:id", requireSignIn, GetIndividualListing);
 
 module.exports = router;

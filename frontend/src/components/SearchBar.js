@@ -14,6 +14,7 @@ export default function SearchBar() {
           width: "100%",
           display: "flex",
           alignItems: "center",
+          marginBottom: "20px",
         }}
       >
         <InputBase

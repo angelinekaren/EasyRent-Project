@@ -10,6 +10,10 @@ async function faceMatch(image1, image2) {
   return await axios.post("/face-match-liveness", data);
 }
 
+async function getListing(id) {
+  return await axios.get(`/api/listing/${id}`);
+}
+
 // function ocrKTP(image) {
 //   const data = JSON.stringify({
 //     images: [image],
@@ -20,4 +24,5 @@ async function faceMatch(image1, image2) {
 
 export const postService = {
   faceMatch,
+  getListing,
 };
