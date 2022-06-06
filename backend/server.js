@@ -2,21 +2,24 @@ const http = require("http");
 const app = require("./app");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const init = require("./init");
 dotenv.config();
+
+const { MONGO_USERNAME, MONGO_PASSWORD, DB_NAME } = process.env;
 
 const server = http.createServer(app);
 
-const init = require("./init");
+const url = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@cluster0.sekfz.mongodb.net/?retryWrites=true&w=majority`;
 
 const hostname = "localhost";
 const PORT = process.env.PORT || 5000;
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URL, {
+    await mongoose.connect(url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      dbName: process.env.DB_NAME,
+      dbName: DB_NAME,
     });
     console.log("mongoose is connected...");
   } catch (err) {
@@ -26,7 +29,7 @@ const connectDB = async () => {
 };
 
 connectDB();
-var db = mongoose.connection;
+const db = mongoose.connection;
 
 init(db).then(() => {
   server.listen(PORT, () => {

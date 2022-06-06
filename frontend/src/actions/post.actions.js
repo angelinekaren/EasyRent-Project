@@ -7,6 +7,9 @@ import {
   STORE_VERIFIED_DATA_FAIL,
   ADD_LISTING,
   RETRIEVE_LISTING_BY_LANDLORD,
+  UPDATE_LISTING,
+  DELETE_LISTING,
+  RETRIEVE_SINGLE_LISTING,
 } from "../constants/post.constants";
 import { useState } from "react";
 import axios from "axios";
@@ -122,7 +125,7 @@ export const storeVerifiedData = (formData) => async (dispatch, getState) => {
     );
 };
 
-export const addListing = (details) => async (dispatch, getState) => {
+export const addListing = (details) => (dispatch, getState) => {
   const {
     userLogin: { user },
   } = getState();
@@ -134,7 +137,7 @@ export const addListing = (details) => async (dispatch, getState) => {
     },
   };
 
-  return await axios.post("/api/listing/addListing", details, config).then(
+  return axios.post("/api/listing/addListing", details, config).then(
     (res) => {
       dispatch({ type: ADD_LISTING, payload: res.data });
       dispatch({ type: SET_MESSAGE, payload: res.data.message });
@@ -176,4 +179,77 @@ export const getListingsByLandlord = () => async (dispatch, getState) => {
       return Promise.reject();
     }
   );
+};
+
+export const getIndividualListing = (id) => {
+  return function (dispatch, getState) {
+    const {
+      userLogin: { user },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: user.accessToken,
+      },
+    };
+
+    axios.get(`/api/listing/${id}`, config).then(
+      (res) => {
+        console.log(res);
+        dispatch({ type: RETRIEVE_SINGLE_LISTING, payload: res.data });
+        return Promise.resolve();
+      },
+      (err) => {
+        console.log(err);
+        return Promise.reject();
+      }
+    );
+  };
+};
+
+export const updateListing = (id, list) => async (dispatch, getState) => {
+  const {
+    userLogin: { user },
+  } = getState();
+
+  const config = {
+    headers: {
+      "content-type": "multipart/form-data",
+      Authorization: user.accessToken,
+    },
+  };
+
+  return await axios
+    .put(`/api/listing/${id}`, list, config)
+    .then((data) => {
+      console.log(data);
+      dispatch({ type: UPDATE_LISTING, payload: data });
+      dispatch({ type: SET_MESSAGE, payload: data.message });
+      return Promise.resolve();
+    })
+    .catch((err) => {
+      console.log(err);
+      return Promise.reject();
+    });
+};
+
+export const deleteListing = (id) => async (dispatch, getState) => {
+  const {
+    userLogin: { user },
+  } = getState();
+
+  const config = {
+    headers: {
+      Authorization: user.accessToken,
+    },
+  };
+
+  return await axios
+    .delete(`/api/listing/${id}`, config)
+    .then(() => {
+      dispatch({ type: DELETE_LISTING, payload: { id } });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };

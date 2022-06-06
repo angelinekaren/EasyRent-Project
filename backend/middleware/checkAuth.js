@@ -4,6 +4,8 @@ const asyncHandler = require("express-async-handler");
 const dotenv = require("dotenv");
 dotenv.config();
 
+const { JWT_SECRET } = process.env;
+
 requireSignIn = asyncHandler(async (req, res, next) => {
   let token = req.headers["authorization"];
   if (!token) {
@@ -11,7 +13,7 @@ requireSignIn = asyncHandler(async (req, res, next) => {
       .status(403)
       .json({ message: "Not authorized! No token provided! " });
   } else {
-    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+    jwt.verify(token, JWT_SECRET, async (err, decoded) => {
       if (err) {
         return res.status(401).json({ message: "Unauthorized!" });
       } else {
@@ -30,7 +32,7 @@ renterAuth = (req, res, next) => {
       .status(403)
       .json({ message: "Not authorized! No token provided! " });
   } else {
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
       if (err) {
         // unauthorized
         return res.status(401).json({ message: "Unauthorized!" });
@@ -55,7 +57,7 @@ ownerAuth = (req, res, next) => {
       .status(403)
       .json({ message: "Not authorized! No token provided! " });
   } else {
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
       if (err) {
         // unauthorized
         return res.status(401).json({ message: "Unauthorized!" });
@@ -80,7 +82,7 @@ adminAuth = (req, res, next) => {
       .status(403)
       .json({ message: "Not authorized! No token provided! " });
   } else {
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
       if (err) {
         // unauthorized
         return res.status(401).json({ message: "Unauthorized!" });

@@ -9,6 +9,7 @@ import {
 const AddProperties = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { user } = userLogin;
+
   return (
     <>
       {user && (
@@ -16,8 +17,7 @@ const AddProperties = () => {
           {user.user.role === "landlord" && (
             <>
               <VerifyLandlordSection />
-
-              <PropertyList />
+              {user.user.isVerified === true && <PropertyList />}
             </>
           )}
         </>

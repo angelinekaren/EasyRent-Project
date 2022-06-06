@@ -7,6 +7,9 @@ import {
   STORE_VERIFIED_DATA_FAIL,
   ADD_LISTING,
   RETRIEVE_LISTING_BY_LANDLORD,
+  UPDATE_LISTING,
+  DELETE_LISTING,
+  RETRIEVE_SINGLE_LISTING,
 } from "../constants/post.constants";
 
 export const faceMatchReducer = (state = {}, action) => {
@@ -45,6 +48,7 @@ export const verifiedUserReducer = (state = {}, action) => {
         error: action.payload,
         isVerified: false,
       };
+
     default:
       return state;
   }
@@ -54,10 +58,25 @@ export const listingReducer = (state = { listing: [] }, action) => {
   const { type, payload } = action;
   switch (type) {
     case ADD_LISTING:
-      console.log(payload.result);
       return { listing: [...state.listing, payload] };
     case RETRIEVE_LISTING_BY_LANDLORD:
       return payload;
+    case UPDATE_LISTING:
+      return state.listing.map((list) => {
+        if (list.id === payload.id) {
+          return {
+            ...list,
+            ...payload,
+          };
+        } else {
+          return list;
+        }
+      });
+    case DELETE_LISTING:
+      const newList = state.listing.filter((list) => list.id !== payload.id);
+      return newList;
+    case RETRIEVE_SINGLE_LISTING:
+      return { ...state, result: payload };
     default:
       return state;
   }

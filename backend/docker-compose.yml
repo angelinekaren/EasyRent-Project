@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  nodejs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nodejs
+    restart: unless-stopped
+    container_name: nodejs
+    env_file: .env
+    environment:
+      - MONGO_USERNAME="${MONGO_USERNAME}"
+      - MONGO_PASSWORD="${MONGO_PASSWORD}"
+      - DB_NAME="${DB_NAME}"
+      - JWT_SECRET="${JWT_SECRET}"
+      - JWT_EXPIRES_IN="${JWT_EXPIRES_IN}"
+      - ADMIN_ACCOUNT_FULLNAME="${ADMIN_ACCOUNT_FULLNAME}"
+      - ADMIN_ACCOUNT_USERNAME="${ADMIN_ACCOUNT_USERNAME}"
+      - ADMIN_ACCOUNT_EMAIL="${ADMIN_ACCOUNT_EMAIL}"
+      - ADMIN_ACCOUNT_PASSWORD="${ADMIN_ACCOUNT_PASSWORD}"
+      - EMAIL_HOST="${EMAIL_HOST}"
+      - SERVICE="${SERVICE}"
+      - EMAIL_USERNAME="${EMAIL_USERNAME}"
+      - EMAIL_PASSWORD="${EMAIL_PASSWORD}"
+      - FROM_EMAIL="${FROM_EMAIL}"
+      - CLIENT_URL="${CLIENT_URL}"
+    ports:
+      - "5000:80"
+    # volumes:
+    #   - node_modules:/node_modules
+    # networks:
+    #   - app-network
+    command: npm start

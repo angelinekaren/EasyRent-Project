@@ -6,11 +6,27 @@ import {
   Typography,
   Button,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
 import { CardCustom } from "./ListingCard.elements";
+import { useDispatch } from "react-redux";
+import {
+  deleteListing,
+  getListingsByLandlord,
+} from "../../actions/post.actions";
 
 export default function ListingCard({ listing }) {
+  const dispatch = useDispatch();
+
   const url = `http://localhost:5000/${listing.housephotos}`;
+
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete?")) {
+      dispatch(deleteListing(id));
+      dispatch(getListingsByLandlord());
+    }
+  };
+
   return (
     <>
       <CardCustom>
@@ -43,7 +59,19 @@ export default function ListingCard({ listing }) {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">See More</Button>
+          <Link
+            to={`/your-properties/${listing._id}`}
+            style={{ textDecoration: "none" }}
+          >
+            <Button size="small">Edit</Button>
+          </Link>
+          <Button
+            size="small"
+            color="error"
+            onClick={() => handleDelete(listing._id)}
+          >
+            Delete
+          </Button>
         </CardActions>
       </CardCustom>
     </>

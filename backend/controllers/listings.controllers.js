@@ -53,6 +53,9 @@ const getAllListingsByUser = asyncHandler(async (req, res) => {
       if (err) {
         return res.status(404).json({ message: "No listing found" });
       }
+      if (!result) {
+        return res.status(404).json({ message: "Not found!" });
+      }
       return res.status(200).json({
         message: "Found",
         result,
@@ -64,10 +67,13 @@ const getAllListingsByUser = asyncHandler(async (req, res) => {
 });
 
 // Get all listing
-const GetListing = (req, res) => {
+const GetListing = async (req, res) => {
   try {
-    Listing.find().then((result) => {
-      res.status(201).json({ result });
+    await Listing.find().then((result) => {
+      if (!result) {
+        return res.status(404).json({ message: "Not found!" });
+      }
+      return res.status(201).json({ result });
     });
   } catch (err) {
     return res.status(500).json({ message: "An error occured", error: err });
@@ -75,31 +81,57 @@ const GetListing = (req, res) => {
 };
 
 // Get Individual Listing
-const GetIndividualListing = (req, res) => {
-  Listing.findById(req.params.id)
-    .then((result) => {
-      res.status(201).json(result);
-    })
-    .catch((err) => {
-      res.status(404).json({ message: "Listing Not Found", error: err });
+const GetIndividualListing = async (req, res) => {
+  try {
+    await Listing.findById(req.params.id).then((result) => {
+      if (!result) {
+        return res.status(404).json({ message: "Not found!" });
+      }
+      return res.status(201).json({ result });
     });
+  } catch (err) {
+    return res.status(404).json({ message: "Listing Not Found", error: err });
+  }
 };
 
 // Update
-const UpdateListing = (req, res) => {
-  if (!req.body) {
-    return res.status(400).json({ message: "Input can not be empty!" });
-  }
+const UpdateListing = async (req, res) => {
+  try {
+    const {
+      listingName,
+      address,
+      district,
+      ward,
+      city,
+      postcode,
+      price,
+      facilities,
+    } = req.body;
 
-  // console.log(req.body);
-  Listing.findOneAndUpdate({ _id: req.params.id }, req.body).then((data) => {
-    if (data) {
+    let image1 = req.files.housephotos[0].path.slice(8);
+    let image2 = req.files.housecertif[0].path.slice(8);
+
+    updates = {
+      listingName: listingName,
+      address: address,
+      district: district,
+      ward: ward,
+      city: city,
+      postcode: postcode,
+      price: price,
+      facilities: facilities,
+      housephotos: image1,
+      housecertif: image2,
+    };
+    console.log(req.params.id);
+    await Listing.findByIdAndUpdate(req.params.id, updates, {
+      findAndModify: false,
+    }).then(() => {
       return res.status(201).json({ message: "Successfully Updated" });
-    } else {
-      return res.status(500).json({ message: "An error occured!" });
-    }
-    // res.send();
-  });
+    });
+  } catch (err) {
+    return res.status(500).json({ message: "Something went wrong!" });
+  }
 };
 
 // Delete

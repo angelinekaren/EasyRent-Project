@@ -18,6 +18,7 @@ import AddProperties from "./pages/AddProperties/AddProperties";
 import Verifying from "./components/VerifyLandlordSection/Verifying";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { FormAddProperty } from "./components";
+import ListingSection from "./components/ListingSection/ListingSection";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/account" element={<AccountPage />} />
             <Route path="/verify" element={<Verifying />} />
             <Route path="/your-properties" element={<AddProperties />} />
+            <Route path="/your-properties/:id" element={<ListingSection />} />
           </Route>
           <Route path="/add-properties" element={<FormAddProperty />} />
           <Route path="/signup" element={<SignUp />} />

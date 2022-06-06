@@ -13,6 +13,7 @@ export const LandlordWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+  padding: 0 90px 0 90px;
 
   @media screen and (max-width: 960px) {
     margin: 0 30px;
@@ -24,6 +25,7 @@ export const HeadingWrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-bottom: 50px;
 `;
 
 export const LandlordHeading = styled.h2`
@@ -36,4 +38,10 @@ export const LandlordSubheading = styled.h5`
   color: #000;
 
   font-size: 48px;
+`;
+
+export const BtnWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-top: 30px;
 `;

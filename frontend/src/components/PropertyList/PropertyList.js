@@ -14,6 +14,7 @@ class PropertyList extends Component {
   constructor(props) {
     super(props);
     this.handleChangeSearchListing = this.handleChangeSearchListing.bind(this);
+
     this.state = {
       searchListing: "",
     };

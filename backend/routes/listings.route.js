@@ -4,6 +4,8 @@ const {
   PostListing,
   getAllListingsByUser,
   GetIndividualListing,
+  UpdateListing,
+  DeleteListing,
 } = require("../controllers/listings.controllers");
 const multer = require("multer");
 const uuid = require("uuid");
@@ -32,5 +34,7 @@ router.post("/addListing", requireSignIn, [multipleImage, PostListing]);
 
 router.get("/getAllUserListing", requireSignIn, getAllListingsByUser);
 router.get("/:id", requireSignIn, GetIndividualListing);
+router.put("/:id", requireSignIn, [multipleImage, UpdateListing]);
+router.delete("/:id", requireSignIn, DeleteListing);
 
 module.exports = router;
