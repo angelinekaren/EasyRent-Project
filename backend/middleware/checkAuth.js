@@ -4,7 +4,7 @@ const asyncHandler = require("express-async-handler");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const { JWT_SECRET } = process.env;
+const config = require("../config");
 
 requireSignIn = asyncHandler(async (req, res, next) => {
   let token = req.headers["authorization"];
@@ -13,7 +13,7 @@ requireSignIn = asyncHandler(async (req, res, next) => {
       .status(403)
       .json({ message: "Not authorized! No token provided! " });
   } else {
-    jwt.verify(token, JWT_SECRET, async (err, decoded) => {
+    jwt.verify(token, config.jwtSecretKey, async (err, decoded) => {
       if (err) {
         return res.status(401).json({ message: "Unauthorized!" });
       } else {

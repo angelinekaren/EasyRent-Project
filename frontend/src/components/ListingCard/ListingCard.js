@@ -18,13 +18,11 @@ import {
 export default function ListingCard({ listing }) {
   const dispatch = useDispatch();
 
-  const url = `http://localhost:5000/${listing.housephotos}`;
+  const url = `https://easyrent-node.herokuapp.com/${listing.housephotos}`;
 
   const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete?")) {
-      dispatch(deleteListing(id));
-      dispatch(getListingsByLandlord());
-    }
+    dispatch(deleteListing(id));
+    dispatch(getListingsByLandlord());
   };
 
   return (

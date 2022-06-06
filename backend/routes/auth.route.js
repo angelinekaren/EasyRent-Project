@@ -10,6 +10,7 @@ const {
   updateProfile,
   changePassword,
 } = require("../controllers/auth.controllers");
+const config = require("../config");
 
 const { requireSignIn } = require("../middleware/checkAuth");
 
@@ -18,7 +19,7 @@ router.get("/", async (req, res, next) => {
 });
 
 router.get("/login", async (req, res, next) => {
-  res.send("login");
+  res.send(config.jwtSecretKey);
 });
 
 router.get("/renter", async (req, res, next) => {
