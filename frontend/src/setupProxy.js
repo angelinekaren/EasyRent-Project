@@ -4,7 +4,7 @@ require("dotenv").config();
 module.exports = function (app) {
   app.use(
     createProxyMiddleware("/api/", {
-      target: "https://easyrent-node.herokuapp.com/",
+      target: "http://localhost:5000/",
       changeOrigin: true,
     })
   );

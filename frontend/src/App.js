@@ -11,7 +11,6 @@ import ContactUs from "./pages/ContactUsPage/ContactUs";
 import ForgetPassword from "./components/ForgetPassword/ForgetPassword";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
 import AccountPage from "./pages/Account/AccountPage";
-import AddProperty from "./components/AddProperty/AddProperty";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
 import AddProperties from "./pages/AddProperties/AddProperties";
@@ -19,6 +18,8 @@ import Verifying from "./components/VerifyLandlordSection/Verifying";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { FormAddProperty } from "./components";
 import ListingSection from "./components/ListingSection/ListingSection";
+import TenantExploreSection from "./components/TenantExploreSection/TenantExploreSection";
+import FavoriteList from "./components/FavoriteList/FavoriteList";
 
 function App() {
   return (
@@ -35,8 +36,11 @@ function App() {
             <Route path="/verify" element={<Verifying />} />
             <Route path="/your-properties" element={<AddProperties />} />
             <Route path="/your-properties/:id" element={<ListingSection />} />
+            <Route path="/add-properties" element={<FormAddProperty />} />
+            <Route path="/explore" element={<TenantExploreSection />} />
+            <Route path="/favorites" element={<FavoriteList />} />
           </Route>
-          <Route path="/add-properties" element={<FormAddProperty />} />
+
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup/renter" element={<SignUpRenters />} />

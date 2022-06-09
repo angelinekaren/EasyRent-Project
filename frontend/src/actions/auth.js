@@ -14,8 +14,6 @@ import {
   USER_CHANGE_PASSWORD_REQUEST,
   USER_CHANGE_PASSWORD_SUCCESS,
   USER_CHANGE_PASSWORD_FAIL,
-  REFRESH_TOKEN,
-  SET_DATA,
 } from "../constants/user.constants";
 
 import { authenticationService } from "../services/authentication.service";

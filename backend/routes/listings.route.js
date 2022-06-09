@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   PostListing,
   getAllListingsByUser,
+  GetListing,
   GetIndividualListing,
   UpdateListing,
   DeleteListing,
@@ -33,6 +34,7 @@ router.post("/addListing", requireSignIn, [multipleImage, PostListing]);
 // });
 
 router.get("/getAllUserListing", requireSignIn, getAllListingsByUser);
+router.get("/getAllListings", GetListing);
 router.get("/:id", requireSignIn, GetIndividualListing);
 router.put("/:id", requireSignIn, [multipleImage, UpdateListing]);
 router.delete("/:id", requireSignIn, DeleteListing);

@@ -54,11 +54,16 @@ export const verifiedUserReducer = (state = {}, action) => {
   }
 };
 
-export const listingReducer = (state = { listing: [] }, action) => {
+let initialState = {
+  listing: [],
+  singleList: {},
+};
+
+export const listingsReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
     case ADD_LISTING:
-      return { listing: [...state.listing, payload] };
+      return { listing: [...(state.listing || []), payload] };
     case RETRIEVE_LISTING_BY_LANDLORD:
       return payload;
     case UPDATE_LISTING:
@@ -76,7 +81,7 @@ export const listingReducer = (state = { listing: [] }, action) => {
       const newList = state.listing.filter((list) => list.id !== payload.id);
       return newList;
     case RETRIEVE_SINGLE_LISTING:
-      return { ...state, result: payload };
+      return { singleList: payload };
     default:
       return state;
   }

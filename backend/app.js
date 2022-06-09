@@ -13,6 +13,7 @@ const authRoutes = require("./routes/auth.route");
 const userRoutes = require("./routes/user.route");
 const listingrouter = require("./routes/listings.route");
 const landlordVerification = require("./routes/landlordVerification.route");
+const tenantRoutes = require("./routes/tenant.route");
 
 app.use(cors(corsOpt));
 
@@ -30,6 +31,7 @@ app.use(bodyParser.json());
 app.use("/api", authRoutes);
 app.use("/api/listing", listingrouter);
 app.use("/api/landlordVerified", landlordVerification);
+app.use("/api/tenants", tenantRoutes);
 app.use(userRoutes);
 
 module.exports = app;

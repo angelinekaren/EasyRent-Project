@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CardMedia,
   CardContent,
@@ -7,23 +7,17 @@ import {
   Button,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-
-import { CardCustom } from "./ListingCard.elements";
+import StarOutlineIcon from "@mui/icons-material/StarOutline";
+import StarIcon from "@mui/icons-material/Star";
+import IconButton from "@mui/material/IconButton";
 import { useDispatch } from "react-redux";
-import {
-  deleteListing,
-  getListingsByLandlord,
-} from "../../actions/post.actions";
 
-export default function ListingCard({ listing }) {
+import { CardCustom } from "../ListingCard/ListingCard.elements";
+
+export default function FavoriteCard({ tenant }) {
   const dispatch = useDispatch();
 
-  const url = `http://localhost:5000/${listing.housephotos}`;
-
-  const handleDelete = (id) => {
-    dispatch(deleteListing(id));
-    dispatch(getListingsByLandlord());
-  };
+  const url = `http://localhost:5000/${tenant.housephotos}`;
 
   return (
     <>
@@ -35,8 +29,7 @@ export default function ListingCard({ listing }) {
         />
         <CardContent>
           <Typography variant="body2" color="text.secondary" gutterBottom>
-            {listing.city}, {listing.ward}, {listing.district},{" "}
-            {listing.postcode}
+            {tenant.city}, {tenant.ward}, {tenant.district}, {tenant.postcode}
           </Typography>
 
           <Typography
@@ -45,31 +38,24 @@ export default function ListingCard({ listing }) {
             component="h2"
             sx={{ color: "#2bc66a" }}
           >
-            {listing.listingName}
+            {tenant.listingName}
           </Typography>
 
           <Typography variant="price" component="h5" gutterBottom>
-            {listing.price} /month
+            {tenant.price} /month
           </Typography>
 
           <Typography variant="body2" color="text.secondary" gutterBottom>
-            {listing.address}
+            {tenant.address}
           </Typography>
         </CardContent>
-        <CardActions>
+        <CardActions disableSpacing>
           <Link
-            to={`/your-properties/${listing._id}`}
+            to={`/explore/${tenant._id}`}
             style={{ textDecoration: "none" }}
           >
-            <Button size="small">Edit</Button>
+            <Button size="small">See More</Button>
           </Link>
-          <Button
-            size="small"
-            color="error"
-            onClick={() => handleDelete(listing._id)}
-          >
-            Delete
-          </Button>
         </CardActions>
       </CardCustom>
     </>

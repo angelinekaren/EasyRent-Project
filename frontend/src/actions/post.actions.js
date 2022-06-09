@@ -196,7 +196,7 @@ export const getIndividualListing = (id) => {
     axios.get(`/api/listing/${id}`, config).then(
       (res) => {
         console.log(res);
-        dispatch({ type: RETRIEVE_SINGLE_LISTING, payload: res.data });
+        dispatch({ type: RETRIEVE_SINGLE_LISTING, payload: res.data.result });
         return Promise.resolve();
       },
       (err) => {

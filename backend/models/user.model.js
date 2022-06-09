@@ -47,6 +47,16 @@ const tenantSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  favorites: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+  ],
+  recentlyviewed: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+  ],
 });
 
 const User = mongoose.model("User", userSchema, "users");

@@ -34,8 +34,9 @@ class PropertyList extends Component {
   render() {
     const { searchListing } = this.state;
     const { listings } = this.props;
+    // console.log(listings);
 
-    if (listings.length === 0) {
+    if (!listings.result?.length) {
       return (
         <>
           <Section>

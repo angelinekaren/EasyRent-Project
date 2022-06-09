@@ -1,36 +1,38 @@
-import FormControlLabel from "@mui/material/FormControlLabel";
 import React, { useState } from "react";
-import Checkbox from "@mui/material/Checkbox";
+import {
+  Grid,
+  TextField,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Alert,
+  Collapse,
+} from "@mui/material";
 import addImg from "../../images/form_add.svg";
-import ArrowIcon from "@mui/icons-material/ArrowBackIosOutlined";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { Fade } from "@mui/material";
-import { Container, Button, TextFieldCustom } from "../../GlobalStyles";
-import { useDispatch, useSelector } from "react-redux";
-import { addListing } from "../../actions/post.actions";
-import { Alert } from "@mui/material";
-import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { Section } from "./AddProperty.elements";
 
 import {
-  RentersSection,
-  RentersHeading,
-  RentersRow,
-  RentersColumn,
-  ArrowLink,
-  ImgWrapper,
-  Img,
-  RentersFormCard,
   Form,
-  RentersFormContainer,
   GenderInputWrapper,
   GenderHeading,
   CustomToggle,
+  RentersColumn,
+  RentersRow,
+  Img,
+  ImgWrapper,
 } from "../SignUpRenters/SignUpRenters.elements";
+import { Container } from "../../GlobalStyles";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addListing } from "../../actions/post.actions";
+import Checkbox from "@mui/material/Checkbox";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
-const FormAddProperty = () => {
+export default function FormAddProperty() {
   const [values, setValues] = useState({
     listingName: "",
     address: "",
@@ -41,6 +43,7 @@ const FormAddProperty = () => {
     price: "",
     size: "",
     gender: "male",
+    facilities: [],
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -48,30 +51,6 @@ const FormAddProperty = () => {
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const [facilities, setFacilities] = useState([]);
-  const options = [
-    { label: "WI-FI", value: "wifi" },
-    { label: "Hot Water", value: "hot_water" },
-    { label: "Private Bath", value: "private_bath" },
-    { label: "Bed", value: "bed" },
-    { label: "Car Parking", value: "car_parking" },
-    { label: "CCTV", value: "cctv" },
-  ];
-
-  const handleCheck = (event) => {
-    var checkedList = [...facilities];
-    if (event.target.checked) {
-      checkedList = [...facilities, event.target.value];
-    } else {
-      checkedList.splice(facilities.indexOf(event.target.value), 1);
-    }
-    setFacilities(checkedList);
-  };
-
-  var isChecked = (item) => {
-    facilities.includes(item);
   };
 
   const {
@@ -84,6 +63,7 @@ const FormAddProperty = () => {
     price,
     size,
     gender,
+    facilities,
   } = values;
 
   const [housePhoto, setHousePhoto] = useState("");
@@ -126,173 +106,154 @@ const FormAddProperty = () => {
   };
 
   const { message } = useSelector((state) => state.message);
+
   return (
-    <RentersSection>
+    <Section>
       <Container>
         <RentersRow>
-          <ArrowLink to="/your-properties">
-            <ArrowIcon style={{ color: "#2bc66a" }} />
-          </ArrowLink>
           <RentersColumn>
             <ImgWrapper>
               <Img src={addImg} alt="Add Property Image" />
             </ImgWrapper>
           </RentersColumn>
           <RentersColumn>
-            {message && (
-              <Collapse in={open}>
-                <Alert
-                  severity="info"
-                  sx={{
-                    marginTop: "0.2rem",
-                    marginBottom: "0.8rem",
-                  }}
-                  action={
-                    <IconButton
-                      aria-label="close"
-                      color="inherit"
-                      size="small"
-                      onClick={() => {
-                        setOpen(false);
-                      }}
-                    >
-                      <CloseIcon fontSize="inherit" />
-                    </IconButton>
-                  }
-                >
-                  {message}
-                </Alert>
-              </Collapse>
-            )}
-            <RentersFormContainer>
-              <Fade in timeout={2500}>
-                <RentersFormCard id="add-property-form">
-                  <RentersHeading>Add Property</RentersHeading>
-                  <Form onSubmit={handleSubmit}>
-                    <TextFieldCustom
-                      className="listingName-input"
+            <Card>
+              {message && (
+                <Collapse in={open}>
+                  <Alert
+                    severity="info"
+                    sx={{
+                      marginTop: "0.2rem",
+                      marginBottom: "0.8rem",
+                    }}
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setOpen(false);
+                        }}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    }
+                  >
+                    {message}
+                  </Alert>
+                </Collapse>
+              )}
+              <CardContent>
+                <Typography>Add Property</Typography>
+                <Form onSubmit={handleSubmit}>
+                  <Grid container columns={16}>
+                    <Grid item xs={8}>
+                      <TextField
+                        className="listingName-input"
+                        required
+                        size="small"
+                        value={values.listingName}
+                        onChange={handleChange("listingName")}
+                        id="listingName"
+                        label="Listing name"
+                        variant="outlined"
+                        sx={{ marginTop: "1.2rem" }}
+                      />
+                      <TextField
+                        className="address-input"
+                        required
+                        size="small"
+                        value={values.address}
+                        onChange={handleChange("address")}
+                        id="address"
+                        label="Address"
+                        variant="outlined"
+                        sx={{ marginTop: "1.2rem" }}
+                      />
+                      <TextField
+                        className="district-input"
+                        required
+                        size="small"
+                        id="district"
+                        label="District"
+                        variant="outlined"
+                        value={values.district}
+                        onChange={handleChange("district")}
+                        sx={{ marginTop: "1.2rem" }}
+                      />
+                      <TextField
+                        className="ward-input"
+                        required
+                        size="small"
+                        id="ward"
+                        label="Ward"
+                        variant="outlined"
+                        value={values.ward}
+                        onChange={handleChange("ward")}
+                        sx={{ marginTop: "1.2rem" }}
+                      />
+                    </Grid>
+                    <Grid item xs={8}>
+                      <TextField
+                        className="city-input"
+                        required
+                        size="small"
+                        id="city"
+                        label="City"
+                        variant="outlined"
+                        value={values.city}
+                        onChange={handleChange("city")}
+                        sx={{ marginTop: "1.2rem" }}
+                      />
+                      <TextField
+                        className="postcode-input"
+                        required
+                        size="small"
+                        id="postcode"
+                        label="Postcode"
+                        variant="outlined"
+                        value={values.postcode}
+                        onChange={handleChange("postcode")}
+                        sx={{ marginTop: "1.2rem" }}
+                      />
+                      <TextField
+                        className="price-input"
+                        required
+                        size="small"
+                        id="price"
+                        label="Price"
+                        variant="outlined"
+                        value={values.price}
+                        onChange={handleChange("price")}
+                        sx={{ marginTop: "1.2rem" }}
+                      />
+                      <TextField
+                        className="size-input"
+                        required
+                        size="small"
+                        id="size"
+                        label="Size"
+                        variant="outlined"
+                        value={values.size}
+                        onChange={handleChange("size")}
+                        sx={{ marginTop: "1.2rem", marginBottom: "1rem" }}
+                      />
+                    </Grid>
+                    <GenderInputWrapper>
+                      <GenderHeading>Facilities</GenderHeading>
+                    </GenderInputWrapper>
+                    <TextField
+                      className="facilities-input"
                       required
                       fullWidth
-                      value={values.listingName}
-                      onChange={handleChange("listingName")}
-                      id="listingName"
-                      label="Listing name"
-                      variant="outlined"
                       size="small"
-                      sx={{ marginTop: "1.2rem" }}
-                    />
-                    <TextFieldCustom
-                      className="address-input"
-                      required
-                      fullWidth
-                      size="small"
-                      value={values.address}
-                      onChange={handleChange("address")}
-                      id="address"
-                      label="Address"
-                      variant="outlined"
-                      sx={{ marginTop: "1.2rem" }}
-                    />
-                    <TextFieldCustom
-                      className="district-input"
-                      required
-                      fullWidth
-                      size="small"
-                      id="district"
-                      label="District"
-                      variant="outlined"
-                      value={values.district}
-                      onChange={handleChange("district")}
-                      sx={{ marginTop: "1.2rem" }}
-                    />
-                    <TextFieldCustom
-                      className="ward-input"
-                      required
-                      fullWidth
-                      id="ward"
-                      size="small"
-                      label="Ward"
-                      variant="outlined"
-                      value={values.ward}
-                      onChange={handleChange("ward")}
-                      sx={{ marginTop: "1.2rem" }}
-                    />
-                    <TextFieldCustom
-                      className="city-input"
-                      required
-                      fullWidth
-                      id="city"
-                      label="City"
-                      size="small"
-                      variant="outlined"
-                      value={values.city}
-                      onChange={handleChange("city")}
-                      sx={{ marginTop: "1.2rem" }}
-                    />
-                    <TextFieldCustom
-                      className="postcode-input"
-                      required
-                      fullWidth
-                      id="postcode"
-                      label="Postcode"
-                      size="small"
-                      variant="outlined"
-                      value={values.postcode}
-                      onChange={handleChange("postcode")}
-                      sx={{ marginTop: "1.2rem" }}
-                    />
-                    <TextFieldCustom
-                      className="price-input"
-                      required
-                      fullWidth
-                      id="price"
-                      label="Price"
-                      size="small"
-                      variant="outlined"
-                      value={values.price}
-                      onChange={handleChange("price")}
-                      sx={{ marginTop: "1.2rem" }}
-                    />
-                    <TextFieldCustom
-                      className="size-input"
-                      required
-                      fullWidth
                       id="size"
-                      label="Size"
-                      size="small"
+                      label="Facilities"
                       variant="outlined"
-                      value={values.size}
-                      onChange={handleChange("size")}
+                      value={values.facilities}
+                      onChange={handleChange("facilities")}
                       sx={{ marginTop: "1.2rem", marginBottom: "1rem" }}
                     />
-                    <div>
-                      <GenderInputWrapper>
-                        <GenderHeading>Facilities</GenderHeading>
-                      </GenderInputWrapper>
-                      {options.map(({ label, value }, index) => {
-                        return (
-                          <FormControlLabel
-                            className="checkbox-group-checkbox-label"
-                            control={
-                              <Checkbox
-                                key={index + label}
-                                type="checkbox"
-                                value={value}
-                                checked={isChecked(value)}
-                                onChange={handleCheck}
-                                sx={{
-                                  color: "#2bc66a",
-                                  "&.Mui-checked": {
-                                    color: "#2bc66a",
-                                  },
-                                }}
-                              />
-                            }
-                            label={label}
-                          />
-                        );
-                      })}
-                    </div>
                     <GenderInputWrapper>
                       <GenderHeading>Gender</GenderHeading>
                       <ToggleButtonGroup
@@ -330,23 +291,19 @@ const FormAddProperty = () => {
                     </GenderInputWrapper>
                     <Button
                       type="submit"
-                      style={{
-                        padding: "12px 120px",
-                        marginTop: "1.5rem",
-                        marginBottom: "3rem",
-                      }}
+                      variant="outlined"
+                      color="success"
+                      sx={{ marginTop: "2rem", width: "100%" }}
                     >
                       Submit
                     </Button>
-                  </Form>
-                </RentersFormCard>
-              </Fade>
-            </RentersFormContainer>
+                  </Grid>
+                </Form>
+              </CardContent>
+            </Card>
           </RentersColumn>
         </RentersRow>
       </Container>
-    </RentersSection>
+    </Section>
   );
-};
-
-export default FormAddProperty;
+}
