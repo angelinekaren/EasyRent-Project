@@ -1,5 +1,27 @@
 const mongoose = require("mongoose");
 
+const reviewSchema = new mongoose.Schema(
+  {
+    fullname: { type: String, required: true },
+    rating: {
+      type: Number,
+      required: true,
+    },
+    reviewsComment: {
+      type: String,
+      required: true,
+    },
+    user: {
+      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tenant",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const listingSchema = new mongoose.Schema({
   listingName: {
     type: String,
@@ -47,16 +69,23 @@ const listingSchema = new mongoose.Schema({
     },
   ],
   housephotos: {
-    // data: Buffer,
-    // contentType: String,
     type: String,
     required: true,
   },
   housecertif: {
-    // data: Buffer,
-    // contentType: String,
     type: String,
     required: true,
+  },
+  reviews: [reviewSchema],
+  rating: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  numberOfReviews: {
+    type: Number,
+    required: true,
+    default: 0,
   },
   userId: {
     required: true,

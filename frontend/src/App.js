@@ -20,6 +20,7 @@ import { FormAddProperty } from "./components";
 import ListingSection from "./components/ListingSection/ListingSection";
 import TenantExploreSection from "./components/TenantExploreSection/TenantExploreSection";
 import FavoriteList from "./components/FavoriteList/FavoriteList";
+import SingleListingView from "./components/SingleListingView/SingleLisitngView";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
             <Route path="/your-properties/:id" element={<ListingSection />} />
             <Route path="/add-properties" element={<FormAddProperty />} />
             <Route path="/explore" element={<TenantExploreSection />} />
+            <Route path="/explore/:id" element={<SingleListingView />} />
             <Route path="/favorites" element={<FavoriteList />} />
           </Route>
 

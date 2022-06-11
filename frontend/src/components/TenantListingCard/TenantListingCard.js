@@ -5,12 +5,15 @@ import {
   CardActions,
   Typography,
   Button,
+  Rating,
 } from "@mui/material";
+
 import { Link } from "react-router-dom";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import StarIcon from "@mui/icons-material/Star";
 import IconButton from "@mui/material/IconButton";
 import { useDispatch, useSelector } from "react-redux";
+import store from "../../store";
 import {
   listingFavorites,
   getAllFavorites,
@@ -26,16 +29,20 @@ export default function TenantListingCard({ tenant }) {
   const url = `http://localhost:5000/${tenant.housephotos}`;
 
   const tenants = useSelector((state) => state.tenants);
+  console.log(tenants);
+
   const { favorites } = tenants;
   console.log(favorites);
-
-  useEffect(() => {
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-  }, [favorites]);
 
   const handleSetFavorites = (id) => {
     dispatch(listingFavorites(id));
   };
+
+  useEffect(() => {
+    if (favorites) {
+      localStorage.setItem("favorites", JSON.stringify(favorites || []));
+    }
+  }, [favorites]);
 
   const handleDeleteFavorites = (id) => {
     dispatch(deleteFavorites(id));
@@ -44,7 +51,7 @@ export default function TenantListingCard({ tenant }) {
   const exists = (tenant) => {
     if (
       favorites &&
-      favorites.filter((item) => item.id === tenant._id).length > 0
+      favorites?.filter((item) => item.id === tenant._id).length > 0
     ) {
       return true;
     }
@@ -84,15 +91,28 @@ export default function TenantListingCard({ tenant }) {
           <Typography variant="body2" color="text.secondary" gutterBottom>
             {tenant.address}
           </Typography>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <Rating value={tenant.rating} readOnly precision={0.5} />
+            <Typography sx={{ marginLeft: "8px" }}>
+              {tenant.numberOfReviews} Reviews
+            </Typography>
+          </div>
         </CardContent>
         <CardActions disableSpacing>
-          <Link
-            to={`/explore/${tenant._id}`}
-            style={{ textDecoration: "none" }}
-          >
-            <Button size="small">See More</Button>
-          </Link>
-
+          <Button size="small">
+            <Link
+              to={`/explore/${tenant._id}`}
+              style={{ textDecoration: "none" }}
+            >
+              See More
+            </Link>
+          </Button>
           <IconButton
             onClick={() =>
               exists(tenant)

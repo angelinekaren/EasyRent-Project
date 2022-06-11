@@ -15,7 +15,10 @@ import {
   listingsReducer,
 } from "./reducers/post.reducers";
 
-import { tenantsReducer } from "./reducers/tenant.reducers";
+import {
+  tenantsReducer,
+  createReviewReducer,
+} from "./reducers/tenant.reducers";
 
 import messageReducers from "./reducers/message.reducers";
 import dataReducers from "./reducers/data.reducers";
@@ -29,6 +32,7 @@ const reducer = combineReducers({
   userVerifiedStatus: verifiedUserReducer,
   listings: listingsReducer,
   tenants: tenantsReducer,
+  listingReview: createReviewReducer,
   message: messageReducers,
   data: dataReducers,
 });

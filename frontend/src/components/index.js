@@ -17,3 +17,4 @@ export { default as FormAddProperty } from "./AddProperty/FormAddProperty";
 export { default as PropertyList } from "./PropertyList/PropertyList";
 export { default as TenantExploreSection } from "./TenantExploreSection/TenantExploreSection";
 export { default as FavoriteList } from "./FavoriteList/FavoriteList";
+export { default as SingleListingView } from "./SingleListingView/SingleLisitngView";

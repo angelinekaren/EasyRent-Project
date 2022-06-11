@@ -174,7 +174,6 @@ const NavbarRenters = () => {
                     Contact Us
                   </NavLink>
                 </NavItem>
-                <NavAccItem></NavAccItem>
               </NavMenu>
               <NavRightMenu>
                 <NavFavouriteItem>

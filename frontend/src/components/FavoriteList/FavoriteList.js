@@ -41,10 +41,10 @@ class FavoriteList extends Component {
             <Container>
               <Headingg>Favorites List</Headingg>
               <Subheading>
-                Results {tenants.fav.length} favorites found
+                Results {tenants?.fav.length} favorites found
               </Subheading>
               <GridCustom container alignItems="stretch" spacing={3}>
-                {tenants.fav &&
+                {tenants?.fav &&
                   tenants.fav.map((tenant, index) => (
                     <Grid key={index} item xs={12} sm={6} md={4}>
                       <FavoriteCard tenant={tenant} />

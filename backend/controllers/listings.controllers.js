@@ -1,4 +1,5 @@
 const { Listing } = require("../models/listings.model");
+const { Tenant } = require("../models/user.model");
 const asyncHandler = require("express-async-handler");
 
 // Add Listing
@@ -141,6 +142,45 @@ const DeleteListing = (req, res) => {
   });
 };
 
+// Create review
+const createReview = asyncHandler(async (req, res) => {
+  const { rating, reviewsComment } = req.body;
+
+  const listing = await Listing.findById(req.params.id);
+  const currentUser = await Tenant.findById(req.userId);
+
+  if (listing) {
+    const isReviewed = listing.reviews.find(
+      (reviewByUser) =>
+        reviewByUser.user.toString() === currentUser._id.toString()
+    );
+
+    if (isReviewed) {
+      res.status(400).json({ message: "Product already reviewed!" });
+    }
+
+    const review = {
+      fullname: currentUser.fullname,
+      rating: Number(rating),
+      reviewsComment,
+      user: currentUser,
+    };
+
+    listing.reviews.push(review);
+
+    listing.numberOfReviews = listing.reviews.length;
+
+    listing.rating =
+      listing.reviews.reduce((acc, item) => item.rating + acc, 0) /
+      listing.reviews.length;
+
+    await listing.save();
+    res.status(201).json({ message: "Review is added!~" });
+  } else {
+    return res.status(404).json({ message: "Listing not found!" });
+  }
+});
+
 module.exports = {
   PostListing,
   GetListing,
@@ -148,4 +188,5 @@ module.exports = {
   UpdateListing,
   DeleteListing,
   getAllListingsByUser,
+  createReview,
 };
