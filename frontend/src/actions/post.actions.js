@@ -221,10 +221,10 @@ export const updateListing = (id, list) => async (dispatch, getState) => {
 
   return await axios
     .put(`/api/listing/${id}`, list, config)
-    .then((data) => {
-      console.log(data);
-      dispatch({ type: UPDATE_LISTING, payload: data });
-      dispatch({ type: SET_MESSAGE, payload: data.message });
+    .then((res) => {
+      console.log(res.data.message);
+      dispatch({ type: UPDATE_LISTING, payload: res.data });
+      dispatch({ type: SET_MESSAGE, payload: res.data.message });
       return Promise.resolve();
     })
     .catch((err) => {

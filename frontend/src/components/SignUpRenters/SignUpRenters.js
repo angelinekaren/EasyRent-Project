@@ -38,6 +38,7 @@ import {
   ErrorSubheading,
   MessageSubheading,
 } from "./SignUpRenters.elements";
+import { useNavigate } from "react-router-dom";
 
 const SignUpRenters = () => {
   const [values, setValues] = useState({
@@ -49,6 +50,7 @@ const SignUpRenters = () => {
     role: "tenant",
   });
 
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (prop) => (event) => {
@@ -79,7 +81,9 @@ const SignUpRenters = () => {
 
       dispatch(
         registerTenant(fullname, username, gender, email, password, role)
-      );
+      ).then(() => {
+        navigate("/login");
+      });
     } catch (err) {
       console.log(err);
     }

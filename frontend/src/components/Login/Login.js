@@ -51,23 +51,22 @@ const Login = () => {
     });
   };
 
-  // const [error, setError] = useState("");
-  // const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { loading, error, message, user } = userLogin;
+  const { loading, error, user } = userLogin;
+  const { message } = useSelector((state) => state.message);
 
   const { email, password } = values;
 
-  useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
-    return user;
-  }, [user, navigate]);
+  // useEffect(() => {
+  //   if (user) {
+  //     navigate("/");
+  //   }
+  //   return user;
+  // }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();

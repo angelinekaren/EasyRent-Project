@@ -7,7 +7,7 @@ import { Container, Button, CssTextField } from "../../GlobalStyles";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
-import { Fade, InputAdornment } from "@mui/material";
+import { Alert, Fade, InputAdornment } from "@mui/material";
 import LockIcon from "@mui/icons-material/HttpsOutlined";
 import ArrowIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -37,6 +37,8 @@ import {
   MessageSubheading,
 } from "./SignUpOwners.elements";
 
+import { useNavigate } from "react-router-dom";
+
 const SignUpOwners = () => {
   const [values, setValues] = useState({
     fullname: "",
@@ -47,6 +49,7 @@ const SignUpOwners = () => {
     role: "landlord",
     showPassword: false,
   });
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 

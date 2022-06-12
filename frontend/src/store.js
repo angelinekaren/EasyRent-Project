@@ -22,6 +22,7 @@ import {
 
 import messageReducers from "./reducers/message.reducers";
 import dataReducers from "./reducers/data.reducers";
+import { adminReducer } from "./reducers/admin.reducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -32,6 +33,7 @@ const reducer = combineReducers({
   userVerifiedStatus: verifiedUserReducer,
   listings: listingsReducer,
   tenants: tenantsReducer,
+  admin: adminReducer,
   listingReview: createReviewReducer,
   message: messageReducers,
   data: dataReducers,
@@ -43,9 +45,7 @@ const userInfoFromStorage = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
   : null;
 
-const userFavorites = localStorage.getItem("favorites")
-  ? JSON.parse(localStorage.getItem("favorites"))
-  : [];
+const userFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
 const initialState = {
   userLogin: { user: userInfoFromStorage },

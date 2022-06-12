@@ -99,10 +99,7 @@ export default function FormAddProperty() {
     formData.append("housephotos", housePhoto);
     formData.append("housecertif", houseCertif);
 
-    dispatch(addListing(formData)).then(() => {
-      navigate("/your-properties");
-      window.location.reload();
-    });
+    dispatch(addListing(formData));
   };
 
   const { message } = useSelector((state) => state.message);

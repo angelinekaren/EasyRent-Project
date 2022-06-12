@@ -126,7 +126,7 @@ const Login = async (req, res) => {
         message: "Invalid password",
       });
     }
-    var token = generateToken(user._id);
+    var token = generateToken(user._id, user.role);
     console.log(token);
     return res.status(201).json({
       message: "User successfully logged in!",
@@ -276,7 +276,7 @@ const updateProfile = asyncHandler(async (req, res) => {
       return res.status(201).json({
         message: "Successfully updated!",
         user: updated,
-        accessToken: generateToken(user._id),
+        accessToken: generateToken(user._id, user.role),
       });
     } else {
       return res.status(404).json({ message: "User not found" });
@@ -306,7 +306,7 @@ const changePassword = asyncHandler(async (req, res) => {
             return res.status(201).json({
               message: "Password successfully changed!",
               user,
-              accessToken: generateToken(user._id),
+              accessToken: generateToken(user._id, user.role),
             });
           });
         }

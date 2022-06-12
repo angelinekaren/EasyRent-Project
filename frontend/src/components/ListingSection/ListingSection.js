@@ -104,10 +104,7 @@ const ListingSection = () => {
     formData.append("housephotos", housePhoto);
     formData.append("housecertif", houseCertif);
 
-    dispatch(updateListing(id, formData)).then(() => {
-      navigate("/your-properties");
-      window.location.reload();
-    });
+    dispatch(updateListing(id, formData));
   };
 
   const { message } = useSelector((state) => state.message);

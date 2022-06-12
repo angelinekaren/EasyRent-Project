@@ -38,8 +38,7 @@ export const tenantsReducer = (state = initialState, action) => {
       return payload;
     case RETRIEVE_SINGLE:
       return { singleListing: payload };
-    case FILTER_BY_GENDER:
-      return state;
+
     default:
       return state;
   }

@@ -21,6 +21,8 @@ import ListingSection from "./components/ListingSection/ListingSection";
 import TenantExploreSection from "./components/TenantExploreSection/TenantExploreSection";
 import FavoriteList from "./components/FavoriteList/FavoriteList";
 import SingleListingView from "./components/SingleListingView/SingleLisitngView";
+import PurchaseSection from "./components/PurchaseSection/PurchaseSection";
+import UsersSection from "./components/UsersSection/UsersSection";
 
 function App() {
   return (
@@ -40,7 +42,9 @@ function App() {
             <Route path="/add-properties" element={<FormAddProperty />} />
             <Route path="/explore" element={<TenantExploreSection />} />
             <Route path="/explore/:id" element={<SingleListingView />} />
+            <Route path="/users" element={<UsersSection />} />
             <Route path="/favorites" element={<FavoriteList />} />
+            <Route path="/checkout/:id" element={<PurchaseSection />} />
           </Route>
 
           <Route path="/signup" element={<SignUp />} />

@@ -51,7 +51,7 @@ export default function TenantListingCard({ tenant }) {
   const exists = (tenant) => {
     if (
       favorites &&
-      favorites?.filter((item) => item.id === tenant._id).length > 0
+      favorites?.filter((item) => item === tenant._id).length > 0
     ) {
       return true;
     }

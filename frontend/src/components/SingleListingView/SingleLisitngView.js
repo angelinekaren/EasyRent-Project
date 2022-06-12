@@ -76,7 +76,7 @@ const SingleListingView = () => {
   console.log(singleListing);
 
   const listingReview = useSelector((state) => state.listingReview);
-  const { success, error } = listingReview;
+  const { success } = listingReview;
 
   useEffect(() => {
     if (success) {
@@ -173,7 +173,7 @@ const SingleListingView = () => {
                 <PriceDetail>{price} /month</PriceDetail>
 
                 <RentNowBtn>
-                  <RentNowLink to="/">Rent now</RentNowLink>
+                  <RentNowLink to={`/checkout/${id}`}>Rent now</RentNowLink>
                 </RentNowBtn>
                 <TextWrapper>
                   <Typography variant="h6">

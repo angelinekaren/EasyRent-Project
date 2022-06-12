@@ -14,6 +14,12 @@ function login(email, password) {
     .then((res) => {
       if (res.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(res.data));
+        if (res.data.user?.role === "tenant") {
+          localStorage.setItem(
+            "favorites",
+            JSON.stringify(res.data.user?.favorites)
+          );
+        }
       }
       return res.data;
     });
@@ -21,6 +27,7 @@ function login(email, password) {
 
 function logout() {
   localStorage.removeItem("user");
+  localStorage.removeItem("favorites");
 }
 
 function registerTenant(fullname, username, gender, email, password, role) {
