@@ -1,5 +1,4 @@
 import axios from "axios";
-require("dotenv").config();
 
 async function faceMatch(image1, image2) {
   const data = JSON.stringify({
