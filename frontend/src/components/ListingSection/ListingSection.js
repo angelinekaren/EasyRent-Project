@@ -32,6 +32,7 @@ import {
 } from "../SignUpRenters/SignUpRenters.elements";
 import { Section } from "../AddProperty/AddProperty.elements";
 import { useDispatch, useSelector } from "react-redux";
+import { CLEAR_MESSAGE } from "../../constants/user.constants";
 
 const ListingSection = () => {
   let { id } = useParams();
@@ -57,7 +58,6 @@ const ListingSection = () => {
   const [houseCertif, setHouseCertif] = useState("");
   const [facilities, setFacilities] = useState([]);
   const [open, setOpen] = useState(true);
-  const [messageReceived, setMessageReceived] = useState(null);
   const [successMsg, setSuccessMsg] = useState("");
 
   const { message } = useSelector((state) => state.message);
@@ -117,9 +117,8 @@ const ListingSection = () => {
         }, 2000);
       })
       .catch(() => {
-        setMessageReceived(message);
         setTimeout(() => {
-          setMessageReceived(null);
+          dispatch({ type: CLEAR_MESSAGE });
         }, 2000);
       });
   };
@@ -161,7 +160,7 @@ const ListingSection = () => {
                     </Alert>
                   </Collapse>
                 )}
-                {messageReceived && (
+                {message && (
                   <Collapse in={open}>
                     <Alert
                       severity="info"
@@ -182,7 +181,7 @@ const ListingSection = () => {
                         </IconButton>
                       }
                     >
-                      {messageReceived}
+                      {message}
                     </Alert>
                   </Collapse>
                 )}

@@ -40,19 +40,7 @@ class LandlordPost extends Component {
       <>
         <Section>
           <LandlordWrapper>
-            {!listings?.length ? (
-              <>
-                <HeadingWrapper>
-                  <LandlordHeading>You haven't post</LandlordHeading>
-                  <LandlordSubheading>anything yet</LandlordSubheading>
-                </HeadingWrapper>
-                <BtnWrapper>
-                  <Link to="/your-properties">
-                    <Button big>Start now</Button>
-                  </Link>
-                </BtnWrapper>
-              </>
-            ) : (
+            {listings?.result?.length > 0 ? (
               <>
                 <HeadingWrapper>
                   <LandlordHeading>Your</LandlordHeading>
@@ -69,6 +57,18 @@ class LandlordPost extends Component {
                 <BtnWrapper>
                   <Link to="/your-properties">
                     <Button big>See More</Button>
+                  </Link>
+                </BtnWrapper>
+              </>
+            ) : (
+              <>
+                <HeadingWrapper>
+                  <LandlordHeading>You haven't post</LandlordHeading>
+                  <LandlordSubheading>anything yet</LandlordSubheading>
+                </HeadingWrapper>
+                <BtnWrapper>
+                  <Link to="/your-properties">
+                    <Button big>Start now</Button>
                   </Link>
                 </BtnWrapper>
               </>

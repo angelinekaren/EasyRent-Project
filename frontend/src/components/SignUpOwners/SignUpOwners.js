@@ -36,6 +36,7 @@ import {
 } from "./SignUpOwners.elements";
 
 import { useNavigate } from "react-router-dom";
+import { CLEAR_MESSAGE } from "../../constants/user.constants";
 
 const SignUpOwners = () => {
   const [values, setValues] = useState({
@@ -51,7 +52,6 @@ const SignUpOwners = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const [errMessage, setErrMessage] = useState(null);
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -89,12 +89,11 @@ const SignUpOwners = () => {
           setTimeout(() => {
             setSuccessMessage("");
             navigate("/login");
-          }, 3000);
+          }, 2000);
         })
         .catch(() => {
-          setErrMessage(message);
           setTimeout(() => {
-            setErrMessage(null);
+            dispatch({ type: CLEAR_MESSAGE });
           }, 2000);
         });
     } catch (err) {
@@ -127,9 +126,9 @@ const SignUpOwners = () => {
                       <br></br>
                     </>
                   )}
-                  {errMessage && (
+                  {message && (
                     <>
-                      <Alert severity="error">{errMessage}</Alert> <br></br>
+                      <Alert severity="error">{message}</Alert> <br></br>
                     </>
                   )}
                   <Form onSubmit={handleSubmit}>

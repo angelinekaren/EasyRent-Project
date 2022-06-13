@@ -138,7 +138,6 @@ export const createListingReview =
       .then(
         () => {
           dispatch({ type: CREATE_REVIEW_SUCCESS });
-
           return Promise.resolve();
         },
         (err) => {

@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../Loading";
 import { registerTenant } from "../../actions/auth";
 import { Alert } from "@mui/material";
+import { CLEAR_MESSAGE } from "../../constants/user.constants";
 
 import {
   RentersSection,
@@ -52,7 +53,6 @@ const SignUpRenters = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const [errMessage, setErrMessage] = useState(null);
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -92,9 +92,8 @@ const SignUpRenters = () => {
           }, 3000);
         })
         .catch(() => {
-          setErrMessage(message);
           setTimeout(() => {
-            setErrMessage(null);
+            dispatch({ type: CLEAR_MESSAGE });
           }, 2000);
         });
     } catch (err) {
@@ -127,9 +126,9 @@ const SignUpRenters = () => {
                       <br></br>
                     </>
                   )}
-                  {errMessage && (
+                  {message && (
                     <>
-                      <Alert severity="error">{errMessage}</Alert> <br></br>
+                      <Alert severity="error">{message}</Alert> <br></br>
                     </>
                   )}
                   <Form onSubmit={handleSubmit}>

@@ -9,8 +9,6 @@ const sendEmail = require("../utils/sendEmail");
 const generateToken = require("../utils/generateToken");
 dotenv.config();
 
-const { CLIENT_URL } = process.env;
-
 // Tenant register controller
 const TenantRegister = async (req, res) => {
   const { fullname, username, gender, email, password, role } = req.body;
@@ -206,7 +204,7 @@ const reqPasswordReset = async (req, res) => {
       }).save();
     });
 
-    const link = `${CLIENT_URL}/resetPassword/${user._id}/${resetToken}`;
+    const link = `${process.env.CLIENT_URL}/resetPassword/${user._id}/${resetToken}`;
     sendEmail(
       user.email,
       "Password Reset Request",

@@ -1,4 +1,5 @@
 const { User } = require("../models/user.model");
+const { Listing } = require("../models/listings.model");
 
 const adminBoard = (req, res) => {
   res.status.json({ message: "Admin Content" });
@@ -21,6 +22,9 @@ const GetUsers = async (req, res) => {
 // Delete user
 const deleteUser = async (req, res) => {
   User.findByIdAndRemove(req.params.id).then(() => {
+    return res.status(201).json({ message: "Successfully Deleted" });
+  });
+  Listing.deleteMany({ user: req.params.id }).then(() => {
     return res.status(201).json({ message: "Successfully Deleted" });
   });
 };

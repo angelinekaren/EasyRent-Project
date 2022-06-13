@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../actions/auth";
 import { Alert } from "@mui/material";
+import { CLEAR_MESSAGE } from "../../constants/user.constants";
 
 import {
   LoginSection,
@@ -40,7 +41,6 @@ const Login = () => {
   });
 
   const [successMessage, setSuccessMessage] = useState("");
-  const [errMessage, setErrMessage] = useState(null);
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -75,9 +75,8 @@ const Login = () => {
         }, 3000);
       })
       .catch(() => {
-        setErrMessage(message);
         setTimeout(() => {
-          setErrMessage(null);
+          dispatch({ type: CLEAR_MESSAGE });
         }, 2000);
       });
   };
@@ -110,9 +109,9 @@ const Login = () => {
                       <br></br>
                     </>
                   )}
-                  {errMessage && (
+                  {message && (
                     <>
-                      <Alert severity="error">{errMessage}</Alert> <br></br>
+                      <Alert severity="error">{message}</Alert> <br></br>
                     </>
                   )}
                   <Form onSubmit={handleSubmit}>

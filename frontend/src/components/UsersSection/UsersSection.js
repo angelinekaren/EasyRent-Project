@@ -92,7 +92,7 @@ class UsersSection extends Component {
               <Paper
                 component="form"
                 sx={{
-                  width: "90%",
+                  width: "80%",
                   display: "flex",
                   alignItems: "center",
                 }}

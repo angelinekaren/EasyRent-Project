@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addListing } from "../../actions/post.actions";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { CLEAR_MESSAGE } from "../../constants/user.constants";
 
 export default function FormAddProperty() {
   const [values, setValues] = useState({
@@ -46,7 +47,6 @@ export default function FormAddProperty() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
-  const [messageReceived, setMessageReceived] = useState(null);
   const [successMsg, setSuccessMsg] = useState("");
 
   const handleChange = (prop) => (event) => {
@@ -110,9 +110,8 @@ export default function FormAddProperty() {
         }, 2000);
       })
       .catch(() => {
-        setMessageReceived(message);
         setTimeout(() => {
-          setMessageReceived(null);
+          dispatch({ type: CLEAR_MESSAGE });
         }, 2000);
       });
   };
@@ -153,7 +152,7 @@ export default function FormAddProperty() {
                   </Alert>
                 </Collapse>
               )}
-              {messageReceived && (
+              {message && (
                 <Collapse in={open}>
                   <Alert
                     severity="error"
@@ -174,7 +173,7 @@ export default function FormAddProperty() {
                       </IconButton>
                     }
                   >
-                    {messageReceived}
+                    {message}
                   </Alert>
                 </Collapse>
               )}

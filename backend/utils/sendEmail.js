@@ -3,19 +3,18 @@ const fs = require("fs");
 const path = require("path");
 const handlebars = require("handlebars");
 
-const { EMAIL_HOST, SERVICE, EMAIL_USERNAME, EMAIL_PASSWORD } = process.env;
-
 const sendEmail = async (email, subject, payload, template) => {
   try {
     const transporter = nodemailer.createTransport({
-      host: EMAIL_HOST,
+      name: process.env.EMAIL_HOST,
+      host: process.env.EMAIL_HOST,
       port: 587,
-      service: SERVICE,
+      service: process.env.SERVICE,
       secure: false,
       requireTLS: true,
       auth: {
-        user: EMAIL_USERNAME,
-        pass: EMAIL_PASSWORD,
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD,
       },
     });
 
@@ -23,7 +22,7 @@ const sendEmail = async (email, subject, payload, template) => {
     const compiledTemplate = handlebars.compile(source);
 
     const mailOptions = {
-      from: EMAIL_USERNAME, 
+      from: process.env.EMAIL_USERNAME,
       to: email,
       subject: subject,
       html: compiledTemplate(payload),
