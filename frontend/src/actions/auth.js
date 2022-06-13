@@ -119,22 +119,24 @@ export const unauthorized = () => (dispatch, getState) => {
     },
   };
 
-  return axios.get("/api/privateRoute", config).then(
-    () => {
-      return Promise.resolve();
-    },
-    (err) => {
-      const message =
-        (err.response && err.response.data && err.response.data.message) ||
-        err.message ||
-        err.toString();
-      dispatch({
-        type: SET_MESSAGE,
-        payload: message,
-      });
-      return Promise.reject();
-    }
-  );
+  return axios
+    .get("https://easyrent-node-backend.herokuapp.com/api/privateRoute", config)
+    .then(
+      () => {
+        return Promise.resolve();
+      },
+      (err) => {
+        const message =
+          (err.response && err.response.data && err.response.data.message) ||
+          err.message ||
+          err.toString();
+        dispatch({
+          type: SET_MESSAGE,
+          payload: message,
+        });
+        return Promise.reject();
+      }
+    );
 };
 
 export const updateProfile = (userr) => async (dispatch, getState) => {
@@ -151,32 +153,38 @@ export const updateProfile = (userr) => async (dispatch, getState) => {
     },
   };
 
-  return await axios.put("/api/account/", userr, config).then(
-    (res) => {
-      dispatch({
-        type: USER_UPDATE_SUCCESS,
-        payload: { user: res.data },
-      });
-      localStorage.setItem("user", JSON.stringify(res.data));
+  return await axios
+    .put(
+      "https://easyrent-node-backend.herokuapp.com/api/account/",
+      userr,
+      config
+    )
+    .then(
+      (res) => {
+        dispatch({
+          type: USER_UPDATE_SUCCESS,
+          payload: { user: res.data },
+        });
+        localStorage.setItem("user", JSON.stringify(res.data));
 
-      return Promise.resolve();
-    },
-    (err) => {
-      const message =
-        (err.response && err.response.data && err.response.data.message) ||
-        err.message ||
-        err.toString();
-      dispatch({
-        type: USER_UPDATE_FAIL,
-      });
-      dispatch({
-        type: SET_MESSAGE,
-        payload: message,
-      });
+        return Promise.resolve();
+      },
+      (err) => {
+        const message =
+          (err.response && err.response.data && err.response.data.message) ||
+          err.message ||
+          err.toString();
+        dispatch({
+          type: USER_UPDATE_FAIL,
+        });
+        dispatch({
+          type: SET_MESSAGE,
+          payload: message,
+        });
 
-      return Promise.reject();
-    }
-  );
+        return Promise.reject();
+      }
+    );
 };
 
 export const changePassword = (passwords) => async (dispatch, getState) => {
@@ -194,7 +202,11 @@ export const changePassword = (passwords) => async (dispatch, getState) => {
   };
 
   return await axios
-    .put("/api/account/changePassword/", passwords, config)
+    .put(
+      "https://easyrent-node-backend.herokuapp.com/api/account/changePassword/",
+      passwords,
+      config
+    )
     .then(
       (res) => {
         dispatch({

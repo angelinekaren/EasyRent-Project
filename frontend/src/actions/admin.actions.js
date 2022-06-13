@@ -18,27 +18,32 @@ export const getAllUsersAdmin = () => async (dispatch, getState) => {
     },
   };
   dispatch({ type: ADMIN_GET_ALL_USERS_REQUEST });
-  return await axios.get("/api/admin/allUsers", config).then(
-    (res) => {
-      dispatch({ type: ADMIN_GET_ALL_USERS_SUCCESS, payload: res.data });
-      console.log(res.data);
-      return Promise.resolve();
-    },
-    (err) => {
-      const message =
-        (err.response && err.response.data && err.response.data.message) ||
-        err.message ||
-        err.toString();
-      dispatch({
-        type: ADMIN_GET_ALL_USERS_FAIL,
-      });
-      dispatch({
-        type: SET_MESSAGE,
-        payload: message,
-      });
-      return Promise.reject();
-    }
-  );
+  return await axios
+    .get(
+      "https://easyrent-node-backend.herokuapp.com/api/admin/allUsers",
+      config
+    )
+    .then(
+      (res) => {
+        dispatch({ type: ADMIN_GET_ALL_USERS_SUCCESS, payload: res.data });
+        console.log(res.data);
+        return Promise.resolve();
+      },
+      (err) => {
+        const message =
+          (err.response && err.response.data && err.response.data.message) ||
+          err.message ||
+          err.toString();
+        dispatch({
+          type: ADMIN_GET_ALL_USERS_FAIL,
+        });
+        dispatch({
+          type: SET_MESSAGE,
+          payload: message,
+        });
+        return Promise.reject();
+      }
+    );
 };
 
 export const deleteUser = (id) => async (dispatch, getState) => {
@@ -53,7 +58,10 @@ export const deleteUser = (id) => async (dispatch, getState) => {
   };
 
   return await axios
-    .delete(`/api/admin/deleteUser/${id}`, config)
+    .delete(
+      `https://easyrent-node-backend.herokuapp.com/api/admin/deleteUser/${id}`,
+      config
+    )
     .then(() => {
       dispatch({ type: DELETE_USER, payload: { id } });
     })

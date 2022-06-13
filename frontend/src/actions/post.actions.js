@@ -94,7 +94,11 @@ export const storeVerifiedData = (formData) => async (dispatch, getState) => {
   };
 
   return await axios
-    .post("/api/landlordVerified/landlordVerification", formData, config)
+    .post(
+      "https://easyrent-node-backend.herokuapp.com/api/landlordVerified/landlordVerification",
+      formData,
+      config
+    )
     .then(
       (res) => {
         dispatch({
@@ -134,25 +138,31 @@ export const addListing = (details) => async (dispatch, getState) => {
     },
   };
 
-  return await axios.post("/api/listing/addListing", details, config).then(
-    (res) => {
-      dispatch({ type: ADD_LISTING, payload: res.data });
+  return await axios
+    .post(
+      "https://easyrent-node-backend.herokuapp.com/api/listing/addListing",
+      details,
+      config
+    )
+    .then(
+      (res) => {
+        dispatch({ type: ADD_LISTING, payload: res.data });
 
-      return Promise.resolve(res.data);
-    },
-    (err) => {
-      const message =
-        (err.response && err.response.data && err.response.data.message) ||
-        err.message ||
-        err.toString();
+        return Promise.resolve(res.data);
+      },
+      (err) => {
+        const message =
+          (err.response && err.response.data && err.response.data.message) ||
+          err.message ||
+          err.toString();
 
-      dispatch({
-        type: SET_MESSAGE,
-        payload: message,
-      });
-      return Promise.reject(err);
-    }
-  );
+        dispatch({
+          type: SET_MESSAGE,
+          payload: message,
+        });
+        return Promise.reject(err);
+      }
+    );
 };
 
 export const getListingsByLandlord = () => async (dispatch, getState) => {
@@ -166,16 +176,21 @@ export const getListingsByLandlord = () => async (dispatch, getState) => {
     },
   };
 
-  return await axios.get("/api/listing/getAllUserListing", config).then(
-    (res) => {
-      dispatch({ type: RETRIEVE_LISTING_BY_LANDLORD, payload: res.data });
-      return Promise.resolve();
-    },
-    (err) => {
-      console.log(err);
-      return Promise.reject();
-    }
-  );
+  return await axios
+    .get(
+      "https://easyrent-node-backend.herokuapp.com/api/listing/getAllUserListing",
+      config
+    )
+    .then(
+      (res) => {
+        dispatch({ type: RETRIEVE_LISTING_BY_LANDLORD, payload: res.data });
+        return Promise.resolve();
+      },
+      (err) => {
+        console.log(err);
+        return Promise.reject();
+      }
+    );
 };
 
 export const getIndividualListing = (id) => {
@@ -190,17 +205,22 @@ export const getIndividualListing = (id) => {
       },
     };
 
-    axios.get(`/api/listing/${id}`, config).then(
-      (res) => {
-        console.log(res);
-        dispatch({ type: RETRIEVE_SINGLE_LISTING, payload: res.data.result });
-        return Promise.resolve();
-      },
-      (err) => {
-        console.log(err);
-        return Promise.reject();
-      }
-    );
+    axios
+      .get(
+        `https://easyrent-node-backend.herokuapp.com/api/listing/${id}`,
+        config
+      )
+      .then(
+        (res) => {
+          console.log(res);
+          dispatch({ type: RETRIEVE_SINGLE_LISTING, payload: res.data.result });
+          return Promise.resolve();
+        },
+        (err) => {
+          console.log(err);
+          return Promise.reject();
+        }
+      );
   };
 };
 
@@ -217,7 +237,11 @@ export const updateListing = (id, list) => async (dispatch, getState) => {
   };
 
   return await axios
-    .put(`/api/listing/${id}`, list, config)
+    .put(
+      `https://easyrent-node-backend.herokuapp.com/api/listing/${id}`,
+      list,
+      config
+    )
     .then((res) => {
       console.log(res.data.message);
       dispatch({ type: UPDATE_LISTING, payload: res.data });
@@ -250,7 +274,10 @@ export const deleteListing = (id) => async (dispatch, getState) => {
   };
 
   return await axios
-    .delete(`/api/listing/${id}`, config)
+    .delete(
+      `https://easyrent-node-backend.herokuapp.com/api/listing/${id}`,
+      config
+    )
     .then(() => {
       dispatch({ type: DELETE_LISTING, payload: { id } });
     })

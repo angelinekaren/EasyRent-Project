@@ -6,7 +6,7 @@ function login(email, password) {
     password,
   });
   return axios
-    .post("http://localhost:5000/api/login", data, {
+    .post("https://easyrent-node-backend.herokuapp.com/api/login", data, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -43,11 +43,15 @@ function registerTenant(fullname, username, gender, email, password, role) {
     password,
     role,
   });
-  return axios.post("/api/signup/renter/", data, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  return axios.post(
+    "https://easyrent-node-backend.herokuapp.com/api/signup/renter/",
+    data,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 }
 
 function registerLanlord(
@@ -67,11 +71,15 @@ function registerLanlord(
     role,
   });
 
-  return axios.post("/api/signup/owner/", data, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  return axios.post(
+    "https://easyrent-node-backend.herokuapp.com/api/signup/owner/",
+    data,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 }
 
 function getCurrentUser() {
@@ -79,11 +87,15 @@ function getCurrentUser() {
 }
 
 function forgetPassword(email) {
-  return axios.post("/api/forgetPassword/", JSON.stringify({ email }), {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  return axios.post(
+    "https://easyrent-node-backend.herokuapp.com/api/forgetPassword/",
+    JSON.stringify({ email }),
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 }
 
 function resetPassword(userId, token, password) {
@@ -93,11 +105,15 @@ function resetPassword(userId, token, password) {
     password,
   });
 
-  return axios.put("/api/resetPassword/", data, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  return axios.put(
+    "https://easyrent-node-backend.herokuapp.com/api/resetPassword/",
+    data,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 }
 
 export const authenticationService = {
