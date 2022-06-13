@@ -11,6 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../actions/auth";
+import { Alert } from "@mui/material";
 
 import {
   LoginSection,
@@ -27,8 +28,6 @@ import {
   TextWrapper,
   ArrowLink,
   Form,
-  ErrorSubheading,
-  MessageSubheading,
 } from "./Login.elements";
 
 import Loading from "../Loading";
@@ -39,6 +38,9 @@ const Login = () => {
     password: "",
     showPassword: "",
   });
+
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errMessage, setErrMessage] = useState(null);
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -52,11 +54,10 @@ const Login = () => {
   };
 
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { loading, error, user } = userLogin;
+  const { loading } = userLogin;
   const { message } = useSelector((state) => state.message);
 
   const { email, password } = values;
@@ -64,10 +65,21 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(login(email, password)).then(() => {
-      navigate("/");
-      window.location.reload();
-    });
+    dispatch(login(email, password))
+      .then(() => {
+        setSuccessMessage(`Your login is successful. Welcome back!~`);
+        setTimeout(() => {
+          setSuccessMessage("");
+          navigate("/");
+          window.location.reload();
+        }, 3000);
+      })
+      .catch(() => {
+        setErrMessage(message);
+        setTimeout(() => {
+          setErrMessage(null);
+        }, 2000);
+      });
   };
 
   const handleMouseDown = (event) => {
@@ -91,9 +103,18 @@ const Login = () => {
               <Fade in timeout={2500}>
                 <LoginFormCard>
                   <LoginHeading>Log In</LoginHeading>
-                  {message && <MessageSubheading>{message}</MessageSubheading>}
-                  {error && <ErrorSubheading>{error}</ErrorSubheading>}
                   {loading && <Loading />}
+                  {successMessage && (
+                    <>
+                      <Alert severity="success">{successMessage}</Alert>{" "}
+                      <br></br>
+                    </>
+                  )}
+                  {errMessage && (
+                    <>
+                      <Alert severity="error">{errMessage}</Alert> <br></br>
+                    </>
+                  )}
                   <Form onSubmit={handleSubmit}>
                     <CssTextField
                       className="email-input"

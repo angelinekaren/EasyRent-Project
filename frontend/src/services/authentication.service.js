@@ -19,11 +19,10 @@ function login(email, password) {
           var arr = [];
           res.data.user?.favorites.map((key) => {
             arr.push({ id: key });
-            console.log(key);
+            return arr;
           });
           localStorage.setItem("favorites", JSON.stringify(arr));
         }
-        console.log(res.data.user.favorites);
       }
       return res.data;
     });

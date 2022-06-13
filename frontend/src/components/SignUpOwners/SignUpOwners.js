@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState } from "react";
 import SignUpOwnersImg from "../../images/signup_logo_1.svg";
 import FullNameIcon from "@mui/icons-material/PersonOutlineOutlined";
 import EmailIcon from "@mui/icons-material/AlternateEmailOutlined";
@@ -33,8 +33,6 @@ import {
   RoleHeading,
   CustomToggle,
   Form,
-  ErrorSubheading,
-  MessageSubheading,
 } from "./SignUpOwners.elements";
 
 import { useNavigate } from "react-router-dom";
@@ -52,6 +50,8 @@ const SignUpOwners = () => {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errMessage, setErrMessage] = useState(null);
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -70,7 +70,7 @@ const SignUpOwners = () => {
   const landlordSignup = useSelector((state) => state.userRegister);
   const messages = useSelector((state) => state.message);
 
-  const { loading, error } = landlordSignup;
+  const { loading } = landlordSignup;
   const { message } = messages;
 
   const { fullname, username, mobile_phone, email, password, role } = values;
@@ -81,7 +81,22 @@ const SignUpOwners = () => {
 
       dispatch(
         registerLanlord(fullname, username, mobile_phone, email, password, role)
-      );
+      )
+        .then(() => {
+          setSuccessMessage(
+            `Hi ${username}, your sign up is successful. We'll direct you to the login page!~`
+          );
+          setTimeout(() => {
+            setSuccessMessage("");
+            navigate("/login");
+          }, 3000);
+        })
+        .catch(() => {
+          setErrMessage(message);
+          setTimeout(() => {
+            setErrMessage(null);
+          }, 2000);
+        });
     } catch (err) {
       console.log(err);
     }
@@ -105,9 +120,18 @@ const SignUpOwners = () => {
                 <OwnersFormCard>
                   <OwnersHeading>Sign Up</OwnersHeading>
                   <OwnersSubHeading>for Property Owner</OwnersSubHeading>
-                  {error && <ErrorSubheading>{error}</ErrorSubheading>}
-                  {message && <MessageSubheading>{message}</MessageSubheading>}
                   {loading && <Loading />}
+                  {successMessage && (
+                    <>
+                      <Alert severity="success">{successMessage}</Alert>{" "}
+                      <br></br>
+                    </>
+                  )}
+                  {errMessage && (
+                    <>
+                      <Alert severity="error">{errMessage}</Alert> <br></br>
+                    </>
+                  )}
                   <Form onSubmit={handleSubmit}>
                     <CssTextField
                       className="fullname-input"

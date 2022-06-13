@@ -25,10 +25,8 @@ export const registerTenant =
     return authenticationService
       .registerTenant(fullname, username, gender, email, password, role)
       .then(
-        (res) => {
+        () => {
           dispatch({ type: USER_REGISTER_SUCCESS });
-          dispatch({ type: SET_MESSAGE, payload: res.data.message });
-
           return Promise.resolve();
         },
         (err) => {
@@ -36,7 +34,6 @@ export const registerTenant =
             (err.response && err.response.data && err.response.data.message) ||
             err.message ||
             err.toString();
-
           dispatch({
             type: USER_REGISTER_FAIL,
           });
@@ -56,9 +53,8 @@ export const registerLanlord =
     return authenticationService
       .registerLanlord(fullname, username, mobile_phone, email, password, role)
       .then(
-        (res) => {
+        () => {
           dispatch({ type: USER_REGISTER_SUCCESS });
-          dispatch({ type: SET_MESSAGE, payload: res.data.message });
           return Promise.resolve();
         },
         (err) => {
@@ -86,11 +82,6 @@ export const login = (email, password) => (dispatch) => {
         type: USER_LOGIN_SUCCESS,
         payload: { user: data },
       });
-      dispatch({
-        type: RETRIEVE_ALL_FAVORITES,
-        payload: data.user.favorites,
-      });
-
       return Promise.resolve();
     },
     (err) => {

@@ -25,11 +25,9 @@ import {
   ImgWrapper,
 } from "../SignUpRenters/SignUpRenters.elements";
 import { Container } from "../../GlobalStyles";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addListing } from "../../actions/post.actions";
-import Checkbox from "@mui/material/Checkbox";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 export default function FormAddProperty() {
@@ -48,6 +46,8 @@ export default function FormAddProperty() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
+  const [messageReceived, setMessageReceived] = useState(null);
+  const [successMsg, setSuccessMsg] = useState("");
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -81,6 +81,8 @@ export default function FormAddProperty() {
     setHouseCertif(file);
   };
 
+  const { message } = useSelector((state) => state.message);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -99,10 +101,21 @@ export default function FormAddProperty() {
     formData.append("housephotos", housePhoto);
     formData.append("housecertif", houseCertif);
 
-    dispatch(addListing(formData));
+    dispatch(addListing(formData))
+      .then(() => {
+        setSuccessMsg("Property successfully added!~");
+        setTimeout(() => {
+          setSuccessMsg("");
+          navigate("/your-properties");
+        }, 2000);
+      })
+      .catch(() => {
+        setMessageReceived(message);
+        setTimeout(() => {
+          setMessageReceived(null);
+        }, 2000);
+      });
   };
-
-  const { message } = useSelector((state) => state.message);
 
   return (
     <Section>
@@ -115,10 +128,10 @@ export default function FormAddProperty() {
           </RentersColumn>
           <RentersColumn>
             <Card>
-              {message && (
+              {successMsg && (
                 <Collapse in={open}>
                   <Alert
-                    severity="info"
+                    severity="success"
                     sx={{
                       marginTop: "0.2rem",
                       marginBottom: "0.8rem",
@@ -136,7 +149,32 @@ export default function FormAddProperty() {
                       </IconButton>
                     }
                   >
-                    {message}
+                    {successMsg}
+                  </Alert>
+                </Collapse>
+              )}
+              {messageReceived && (
+                <Collapse in={open}>
+                  <Alert
+                    severity="error"
+                    sx={{
+                      marginTop: "0.2rem",
+                      marginBottom: "0.8rem",
+                    }}
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setOpen(false);
+                        }}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    }
+                  >
+                    {messageReceived}
                   </Alert>
                 </Collapse>
               )}

@@ -137,7 +137,7 @@ export const addListing = (details) => async (dispatch, getState) => {
   return await axios.post("/api/listing/addListing", details, config).then(
     (res) => {
       dispatch({ type: ADD_LISTING, payload: res.data });
-      dispatch({ type: SET_MESSAGE, payload: res.data.message });
+
       return Promise.resolve(res.data);
     },
     (err) => {
@@ -221,10 +221,18 @@ export const updateListing = (id, list) => async (dispatch, getState) => {
     .then((res) => {
       console.log(res.data.message);
       dispatch({ type: UPDATE_LISTING, payload: res.data });
-      dispatch({ type: SET_MESSAGE, payload: res.data.message });
+
       return Promise.resolve();
     })
     .catch((err) => {
+      const message =
+        (err.response && err.response.data && err.response.data.message) ||
+        err.message ||
+        err.toString();
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
       console.log(err);
       return Promise.reject();
     });

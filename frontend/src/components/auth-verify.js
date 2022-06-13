@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Outlet, Navigate, useLocation, useNavigate } from "react-router-dom";
+import React from "react";
+import { Outlet, Navigate } from "react-router-dom";
 import { authenticationService } from "../services/authentication.service";
 
 const parseJwt = (token) => {

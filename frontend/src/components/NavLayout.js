@@ -1,5 +1,5 @@
 import Navbar from "./Navbar";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import NavbarOwners from "./NavbarOwners";
 import NavbarRenters from "./NavbarRenters";
 import NavbarAdmin from "./NavbarAdmin";

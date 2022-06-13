@@ -9,12 +9,10 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
-import Avatar from "@mui/material/Avatar";
 import Logout from "@mui/icons-material/Logout";
 import AccountIcon from "@mui/icons-material/AccountCircleRounded";
 import HomeIcon from "@mui/icons-material/Home";
 import UsersIcon from "@mui/icons-material/GroupRounded";
-// import { authenticationService } from "../../services/authentication.service";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions/auth";
 
@@ -26,7 +24,6 @@ import {
   SidebarCardDetail,
   AccName,
   SidebarIcon,
-  SideLink,
 } from "./NavbarAdmin.elements";
 
 import {

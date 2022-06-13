@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 import { isExpired } from "./auth-verify";
 import { connect } from "react-redux";
 
-const PrivateRoute = ({ loggedIn, redirectPath = "/login" }) => {
+const PrivateRoute = ({ loggedIn, redirectPath = "/login", allowedRoles }) => {
   if (!loggedIn || isExpired()) {
     return <Navigate to={redirectPath} replace />;
   }
