@@ -19,9 +19,21 @@ const tenantRoutes = require("./routes/tenant.route");
 app.use(cors(corsOpt));
 
 app.use(function (req, res, next) {
-  res.header(
+  // res.header(
+  //   "Access-Control-Allow-Headers",
+  //   "x-access-token, Origin, Content-Type, Accept"
+  // );
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  // another common pattern
+  // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+  );
+  res.setHeader(
     "Access-Control-Allow-Headers",
-    "x-access-token, Origin, Content-Type, Accept"
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Origin, x-access-token"
   );
   next();
 });
