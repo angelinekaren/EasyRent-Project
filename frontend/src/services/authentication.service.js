@@ -6,7 +6,7 @@ function login(email, password) {
     password,
   });
   return axios
-    .post("/api/login", data, {
+    .post("http://localhost:5000/api/login", data, {
       headers: {
         "Content-Type": "application/json",
       },
