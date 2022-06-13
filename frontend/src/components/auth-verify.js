@@ -12,7 +12,7 @@ const parseJwt = (token) => {
   }
 };
 
-const isExpired = () => {
+export const isExpired = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   if (user) {
     const decodedJWT = parseJwt(user.accessToken);

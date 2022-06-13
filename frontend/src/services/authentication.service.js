@@ -14,12 +14,16 @@ function login(email, password) {
     .then((res) => {
       if (res.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(res.data));
+        localStorage.setItem("isLoggedIn", JSON.stringify(true));
         if (res.data.user?.role === "tenant") {
-          localStorage.setItem(
-            "favorites",
-            JSON.stringify(res.data.user?.favorites)
-          );
+          var arr = [];
+          res.data.user?.favorites.map((key) => {
+            arr.push({ id: key });
+            console.log(key);
+          });
+          localStorage.setItem("favorites", JSON.stringify(arr));
         }
+        console.log(res.data.user.favorites);
       }
       return res.data;
     });
@@ -28,6 +32,7 @@ function login(email, password) {
 function logout() {
   localStorage.removeItem("user");
   localStorage.removeItem("favorites");
+  localStorage.removeItem("isLoggedIn");
 }
 
 function registerTenant(fullname, username, gender, email, password, role) {
@@ -96,14 +101,6 @@ function resetPassword(userId, token, password) {
   });
 }
 
-function unauthorized() {
-  return axios.post("/api/privateRoute", {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-}
-
 export const authenticationService = {
   login,
   logout,
@@ -112,5 +109,4 @@ export const authenticationService = {
   getCurrentUser,
   forgetPassword,
   resetPassword,
-  unauthorized,
 };

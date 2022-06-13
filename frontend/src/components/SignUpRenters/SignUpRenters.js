@@ -81,9 +81,7 @@ const SignUpRenters = () => {
 
       dispatch(
         registerTenant(fullname, username, gender, email, password, role)
-      ).then(() => {
-        navigate("/login");
-      });
+      );
     } catch (err) {
       console.log(err);
     }

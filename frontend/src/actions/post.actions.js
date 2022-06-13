@@ -11,14 +11,11 @@ import {
   DELETE_LISTING,
   RETRIEVE_SINGLE_LISTING,
 } from "../constants/post.constants";
-import { useState } from "react";
 import axios from "axios";
 
-import { SET_MESSAGE, SET_DATA } from "../constants/user.constants";
+import { SET_MESSAGE } from "../constants/user.constants";
 
 import { postService } from "../services/posts.service";
-import { useSelector } from "react-redux";
-import dataReducers from "../reducers/data.reducers";
 
 export const faceMatchLandlord =
   (image1, image2) => async (dispatch, getState) => {

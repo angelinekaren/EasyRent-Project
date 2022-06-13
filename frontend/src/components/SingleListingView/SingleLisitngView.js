@@ -145,7 +145,7 @@ const SingleListingView = () => {
             <WelcomeColumn>
               <ImgWrapper>
                 <Img
-                  src={`http://localhost:5000/${housePhoto}`}
+                  src={`https://easyrent-node-backend.herokuapp.com/${housePhoto}`}
                   alt="Property Image"
                 />
               </ImgWrapper>

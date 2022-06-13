@@ -130,7 +130,17 @@ const Login = async (req, res) => {
     console.log(token);
     return res.status(201).json({
       message: "User successfully logged in!",
-      user,
+      user: {
+        _id: user._id,
+        role: user.role,
+        isVerified: user.isVerified,
+        email: user.email,
+        fullname: user.fullname,
+        username: user.username,
+        gender: user?.gender,
+        mobile_phone: user?.mobile_phone,
+        favorites: user?.favorites,
+      },
       accessToken: token,
     });
   });
@@ -275,7 +285,17 @@ const updateProfile = asyncHandler(async (req, res) => {
       const updated = await user.save();
       return res.status(201).json({
         message: "Successfully updated!",
-        user: updated,
+        user: {
+          _id: updated._id,
+          role: updated.role,
+          isVerified: updated.isVerified,
+          email: updated.email,
+          fullname: updated.fullname,
+          username: updated.username,
+          gender: updated?.gender,
+          mobile_phone: updated?.mobile_phone,
+          favorites: updated?.favorites,
+        },
         accessToken: generateToken(user._id, user.role),
       });
     } else {
@@ -305,7 +325,17 @@ const changePassword = asyncHandler(async (req, res) => {
             await user.save();
             return res.status(201).json({
               message: "Password successfully changed!",
-              user,
+              user: {
+                _id: user._id,
+                role: user.role,
+                isVerified: user.isVerified,
+                email: user.email,
+                fullname: user.fullname,
+                username: user.username,
+                gender: user?.gender,
+                mobile_phone: user?.mobile_phone,
+                favorites: user?.favorites,
+              },
               accessToken: generateToken(user._id, user.role),
             });
           });

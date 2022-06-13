@@ -24,6 +24,7 @@ export const tenantsReducer = (state = initialState, action) => {
       return {
         ...state,
         listOfListings: payload,
+        favorites: JSON.parse(localStorage.getItem("favorites")) || [],
       };
     case ADD_FAVORITES:
       return { ...state, favorites: [...(state.favorites || []), payload] };

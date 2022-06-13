@@ -12,13 +12,13 @@ import { useSelector } from "react-redux";
 function NavLayout() {
   // const currentUser = authenticationService.getCurrentUser();
   const userLogin = useSelector((state) => state.userLogin);
-  const { user } = userLogin;
+  const { loggedIn, user } = userLogin;
 
   return (
     <div>
       {(() => {
-        if (user) {
-          console.log(user);
+        if (loggedIn) {
+          console.log(loggedIn);
           if (user.user.role === "admin") {
             return <NavbarAdmin />;
           }

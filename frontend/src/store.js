@@ -45,10 +45,16 @@ const userInfoFromStorage = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
   : null;
 
-const userFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+const userFavorites = localStorage.getItem("favorites")
+  ? JSON.parse(localStorage.getItem("favorites"))
+  : [];
+
+const userLoggedIn = localStorage.getItem("isLoggedIn")
+  ? JSON.parse(localStorage.getItem("isLoggedIn"))
+  : false;
 
 const initialState = {
-  userLogin: { user: userInfoFromStorage },
+  userLogin: { user: userInfoFromStorage, loggedIn: userLoggedIn },
   tenants: { favorites: userFavorites, listOfListings: {} },
 };
 

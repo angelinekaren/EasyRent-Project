@@ -1,4 +1,5 @@
 import axios from "axios";
+import { RETRIEVE_ALL_FAVORITES } from "../constants/tenant.constants";
 import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -85,6 +86,11 @@ export const login = (email, password) => (dispatch) => {
         type: USER_LOGIN_SUCCESS,
         payload: { user: data },
       });
+      dispatch({
+        type: RETRIEVE_ALL_FAVORITES,
+        payload: data.user.favorites,
+      });
+
       return Promise.resolve();
     },
     (err) => {
@@ -111,8 +117,18 @@ export const logout = () => (dispatch) => {
   });
 };
 
-export const unauthorized = () => (dispatch) => {
-  authenticationService.unauthorized().then(
+export const unauthorized = () => (dispatch, getState) => {
+  const {
+    userLogin: { user },
+  } = getState();
+
+  const config = {
+    headers: {
+      Authorization: user.accessToken,
+    },
+  };
+
+  return axios.get("/api/privateRoute", config).then(
     () => {
       return Promise.resolve();
     },

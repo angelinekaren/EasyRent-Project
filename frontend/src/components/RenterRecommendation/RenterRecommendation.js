@@ -57,7 +57,7 @@ class RenterRecommendation extends Component {
 
   render() {
     const { tenants } = this.props;
-    const { listOfListings } = tenants;
+    const { listOfListings, favorites } = tenants;
 
     var filteredData = this.filterRatingOrder(listOfListings?.result);
 
@@ -76,7 +76,10 @@ class RenterRecommendation extends Component {
                 {filteredData &&
                   filteredData?.slice(0, 3).map((tenant, index) => (
                     <Grid key={index} item xs={12} sm={6} md={4}>
-                      <TenantListingCard tenant={tenant} />
+                      <TenantListingCard
+                        tenant={tenant}
+                        favorites={favorites}
+                      />
                     </Grid>
                   ))}
               </GridCustom>

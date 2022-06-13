@@ -9,7 +9,7 @@ import TenantListingCard from "../TenantListingCard/TenantListingCard";
 import { GridCustom } from "../PropertyList/PropertyList.elements";
 import { Section, Wrap } from "./TenantExploreSection.elements";
 import { Container } from "../../GlobalStyles";
-
+import { getAllFavorites } from "../../actions/tenants.actions";
 import { Grid, FormControl, MenuItem, Select } from "@mui/material";
 
 class TenantExploreSection extends Component {
@@ -109,10 +109,14 @@ class TenantExploreSection extends Component {
 
   render() {
     const { tenants } = this.props;
-    const { listOfListings } = tenants;
+    console.log(tenants);
+    const { listOfListings, favorites } = tenants;
+    console.log(listOfListings);
 
     const { searchQuery, condition, filterGender, filterRatingOrder } =
       this.state;
+
+    console.log(favorites);
 
     var filteredData = this.filterByGender(listOfListings?.result);
     filteredData = this.filterRatingByOrder(filteredData);
@@ -188,7 +192,10 @@ class TenantExploreSection extends Component {
                   )
                   .map((tenant, index) => (
                     <Grid key={index} item xs={12} sm={6} md={4}>
-                      <TenantListingCard tenant={tenant} />
+                      <TenantListingCard
+                        tenant={tenant}
+                        favorites={favorites}
+                      />
                     </Grid>
                   ))}
             </GridCustom>
@@ -205,6 +212,13 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {
-  getAllListingsTenants,
-})(TenantExploreSection);
+function mapDispatchToProps(dispatch) {
+  return {
+    getAllListingsTenants: () => dispatch(getAllListingsTenants()),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TenantExploreSection);

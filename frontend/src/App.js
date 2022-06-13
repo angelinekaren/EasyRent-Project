@@ -15,7 +15,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
 import AddProperties from "./pages/AddProperties/AddProperties";
 import Verifying from "./components/VerifyLandlordSection/Verifying";
-import { PrivateRoute } from "./components/PrivateRoute";
+import PrivateRoute from "./components/PrivateRoute";
 import { FormAddProperty } from "./components";
 import ListingSection from "./components/ListingSection/ListingSection";
 import TenantExploreSection from "./components/TenantExploreSection/TenantExploreSection";
@@ -31,17 +31,24 @@ function App() {
         <GlobalStyle />
         <Routes>
           <Route element={<NavLayout />}>
-            {/* Public Routes */}
             <Route path="/" exact element={<Home />} />
-            <Route path="/aboutus" element={<AboutUs />} />
-            <Route path="/contactus" element={<ContactUs />} />
-            <Route path="/account" element={<AccountPage />} />
-            <Route path="/verify" element={<Verifying />} />
-            <Route path="/your-properties" element={<AddProperties />} />
-            <Route path="/your-properties/:id" element={<ListingSection />} />
-            <Route path="/add-properties" element={<FormAddProperty />} />
-            <Route path="/explore" element={<TenantExploreSection />} />
-            <Route path="/explore/:id" element={<SingleListingView />} />
+          </Route>
+          {/* Private Routes */}
+
+          <Route element={<PrivateRoute />}>
+            <Route element={<NavLayout />}>
+              <Route path="/aboutus" element={<AboutUs />} />
+              <Route path="/contactus" element={<ContactUs />} />
+              <Route path="/account" element={<AccountPage />} />
+              <Route path="/verify" element={<Verifying />} />
+              <Route path="/your-properties" element={<AddProperties />} />
+              <Route path="/your-properties/:id" element={<ListingSection />} />
+              <Route path="/add-properties" element={<FormAddProperty />} />
+
+              <Route path="/explore" element={<TenantExploreSection />} />
+              <Route path="/explore/:id" element={<SingleListingView />} />
+            </Route>
+
             <Route path="/users" element={<UsersSection />} />
             <Route path="/favorites" element={<FavoriteList />} />
             <Route path="/checkout/:id" element={<PurchaseSection />} />

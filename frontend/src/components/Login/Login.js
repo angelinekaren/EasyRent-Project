@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Fade, InputAdornment } from "@mui/material";
 import { Container, Button, CssTextField } from "../../GlobalStyles";
 import PersonIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -60,13 +60,6 @@ const Login = () => {
   const { message } = useSelector((state) => state.message);
 
   const { email, password } = values;
-
-  // useEffect(() => {
-  //   if (user) {
-  //     navigate("/");
-  //   }
-  //   return user;
-  // }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
