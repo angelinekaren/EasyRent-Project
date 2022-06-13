@@ -5,7 +5,8 @@ const cors = require("cors");
 const app = express();
 
 var corsOpt = {
-  origin: "http://localhost:3000/",
+  origin: "*",
+  credentials: true,
 };
 
 // routes
@@ -24,6 +25,7 @@ app.use(function (req, res, next) {
   );
   next();
 });
+
 app.use(express.static("uploads"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
