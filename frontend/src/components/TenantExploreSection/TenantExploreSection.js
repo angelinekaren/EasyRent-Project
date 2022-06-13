@@ -176,7 +176,6 @@ class TenantExploreSection extends Component {
                 </Select>
               </FormControl>
             </Wrap>
-
             <GridCustom container alignItems="stretch" spacing={3}>
               {filteredData &&
                 filteredData

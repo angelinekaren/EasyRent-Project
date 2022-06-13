@@ -26,14 +26,6 @@ async function updateListing(id, updatedData) {
   );
 }
 
-// function ocrKTP(image) {
-//   const data = JSON.stringify({
-//     images: [image],
-//   });
-//   console.log(data);
-//   return axios.post("/ocr-ktp", data);
-// }
-
 export const postService = {
   faceMatch,
   getListing,
