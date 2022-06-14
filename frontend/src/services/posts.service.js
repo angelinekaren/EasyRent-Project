@@ -5,7 +5,13 @@ async function faceMatch(image1, image2) {
     images: [image1, image2],
   });
 
-  return await axios.post("/face-match-liveness", data);
+  return await axios.post("/face-match-liveness", data, {
+    headers: {
+      Authorization: `NODEFLUX-HMAC-SHA256 Credential=${process.env.REACT_APP_NODEFLUX_ACCESS_KEY}/${process.env.REACT_APP_NODEFLUX_DATE}/nodeflux.api.v1beta1.ImageAnalytic/StreamImageAnalytic, SignedHeaders=x-nodeflux-timestamp, Signature=${process.env.REACT_APP_NODEFLUX_TOKEN}`,
+      "x-nodeflux-timestamp": `${process.env.REACT_APP_X_NODEFLUX_TIMESTAMP}`,
+      "Content-Type": "application/json",
+    },
+  });
 }
 
 async function getListing(id) {

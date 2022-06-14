@@ -75,7 +75,11 @@ export const faceMatchLandlord =
     };
 
     if (!faceMatched) {
-      await checkStatus().then(() => console.log("wait"));
+      await checkStatus()
+        .then(() => console.log("wait"))
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
