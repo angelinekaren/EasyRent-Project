@@ -11,7 +11,9 @@ module.exports = function (app) {
   app.use(
     createProxyMiddleware("/face-match-liveness", {
       target: "https://api.cloud.nodeflux.io/v1/analytics/",
-      changeOrigin: true,
+      onProxyRes: function (proxyRes, req, res) {
+        proxyRes.headers["Access-Control-Allow-Origin"] = "*";
+      },
       headers: {
         Authorization: `NODEFLUX-HMAC-SHA256 Credential=${process.env.NODEFLUX_ACCESS_KEY}/${process.env.NODEFLUX_DATE}/nodeflux.api.v1beta1.ImageAnalytic/StreamImageAnalytic, SignedHeaders=x-nodeflux-timestamp, Signature=${process.env.NODEFLUX_TOKEN}`,
         "x-nodeflux-timestamp": `${process.env.X_NODEFLUX_TIMESTAMP}`,
