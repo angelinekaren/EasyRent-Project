@@ -15,7 +15,7 @@ async function faceMatch(image1, image2) {
   // console.log(data);
 
   return await axios.post(
-    "https://api.cloud.nodeflux.io/v1/analytics/face-match-liveness",
+    "https://easyrent-app-project-guslv527m-angelinekaren.vercel.app/https://api.cloud.nodeflux.io/v1/analytics/face-match-liveness",
     data,
     config
   );
