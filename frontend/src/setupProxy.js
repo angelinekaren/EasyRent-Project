@@ -8,6 +8,7 @@ module.exports = function (app) {
       changeOrigin: true,
     })
   );
+
   app.use(
     createProxyMiddleware("/face-match-liveness", {
       target: "https://api.cloud.nodeflux.io/v1/analytics/",
@@ -19,6 +20,7 @@ module.exports = function (app) {
       },
     })
   );
+
   app.use(
     createProxyMiddleware("/ocr-ktp", {
       target: "https://api.cloud.nodeflux.io/v1/analytics",
