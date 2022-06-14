@@ -10,8 +10,7 @@ module.exports = function (app) {
   );
 
   app.use(
-    "/face-match-liveness",
-    createProxyMiddleware({
+    createProxyMiddleware("/face-match-liveness", {
       target: "https://api.cloud.nodeflux.io/v1/analytics/face-match-liveness",
       changeOrigin: true,
       headers: {
