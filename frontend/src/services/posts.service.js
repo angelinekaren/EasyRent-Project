@@ -12,7 +12,7 @@ async function faceMatch(image1, image2) {
       "Content-Type": "application/json",
     },
   };
-  // console.log(data);
+  console.log(process.env.X_NODEFLUX_TIMESTAMP);
 
   return await axios.post("/face-match-liveness", data);
 }
