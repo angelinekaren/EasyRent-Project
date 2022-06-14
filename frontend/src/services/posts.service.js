@@ -5,10 +5,7 @@ async function faceMatch(image1, image2) {
     images: [image1, image2],
   });
 
-  return await axios.post(
-    "https://api.cloud.nodeflux.io/v1/analytics/face-match-liveness",
-    data
-  );
+  return await axios.post("/face-match-liveness", data);
 }
 
 async function getListing(id) {
