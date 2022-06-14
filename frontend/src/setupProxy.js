@@ -14,7 +14,7 @@ module.exports = function (app) {
       changeOrigin: true,
       headers: {
         Authorization: `NODEFLUX-HMAC-SHA256 Credential=${process.env.NODEFLUX_ACCESS_KEY}/${process.env.NODEFLUX_DATE}/nodeflux.api.v1beta1.ImageAnalytic/StreamImageAnalytic, SignedHeaders=x-nodeflux-timestamp, Signature=${process.env.NODEFLUX_TOKEN}`,
-        "x-nodeflux-timestamp": `${process.env.X_NODEFLUX_TIMESTAMP}`,
+        "x-nodeflux-timestamp": "20220614T001256Z",
         "Content-Type": "application/json",
       },
     })
